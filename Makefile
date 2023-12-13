@@ -1,5 +1,5 @@
 NAME = minishell
-SRCS = main.c pipe_child.c pipe_command.c pipe_first_setting.c pipe_heredoc.c pipe.c
+SRCS = main.c ms_pasing.c ms_split.c
 INCS = minishell.h
 LIBFT = -Ilibft -Llibft -lft
 READ = -lreadline
