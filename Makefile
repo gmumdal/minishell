@@ -1,5 +1,5 @@
 NAME = minishell
-SRCS = main.c ms_pasing.c ms_split.c
+SRCS = main.c ms_parsing.c ms_split.c
 INCS = minishell.h
 LIBFT = -Ilibft -Llibft -lft
 READ = -lreadline

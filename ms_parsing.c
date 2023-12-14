@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ms_pasing.c                                        :+:      :+:    :+:   */
+/*   ms_parsing.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jongmlee <jongmlee@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hyeongsh <hyeongsh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/08 12:20:48 by hyeongsh          #+#    #+#             */
-/*   Updated: 2023/12/11 18:36:32 by jongmlee         ###   ########.fr       */
+/*   Updated: 2023/12/14 14:58:34 by hyeongsh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_list	*pasing(char *line)
+t_list	*parsing(char *line)
 {
 	t_list	*head;
 	t_list	*tmp;
