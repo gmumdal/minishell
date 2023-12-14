@@ -57,8 +57,8 @@ void	print_data(t_data *data)
 	print_data_node(data);
 	while (data->next != NULL)
 	{
-		print_data_node(data);
 		data = data->next;
+		print_data_node(data);
 	}
 }
 

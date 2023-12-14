@@ -63,7 +63,6 @@ t_data	*data_lstnew(t_list *line)
 	if (toss == NULL)
 		exit(1);
 	init_data_node(toss);
-	print_node(line);
 	toss->cmd_arr = make_cmd(line);
 	while (line != NULL && line->type != -5)
 	{

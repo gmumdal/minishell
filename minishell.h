@@ -6,7 +6,7 @@
 /*   By: jongmlee <jongmlee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 16:53:34 by hyeongsh          #+#    #+#             */
-/*   Updated: 2023/12/13 21:56:51 by jongmlee         ###   ########.fr       */
+/*   Updated: 2023/12/14 19:12:45 by jongmlee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,8 @@ typedef struct s_info
 	int		outfile_fd;
 	int		idx;
 	int		cur;
-	int		is_heredoc;
+	int		cnt;
+	char	**envp;
 	t_data	*data;
 }	t_info;
 
@@ -112,10 +113,10 @@ void	redirect(t_info *info);
 
 /* pipe */
 int		wait_children(t_info *info);
-void	init_info(t_info *info, t_data *data);
+void	init_info(t_info *info, t_container *con);
 void	child(t_info *info);
 void	here_doc(t_info *info);
-int		pipex(t_data *data);
+int		pipex(t_container *con);
 
 /* data_list */
 void	init_data_node(t_data *node);

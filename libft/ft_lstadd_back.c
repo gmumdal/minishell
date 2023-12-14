@@ -6,7 +6,7 @@
 /*   By: jongmlee <jongmlee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/08 21:00:43 by hyeongsh          #+#    #+#             */
-/*   Updated: 2023/12/13 21:58:17 by jongmlee         ###   ########.fr       */
+/*   Updated: 2023/12/14 15:44:17 by jongmlee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,25 +35,17 @@ int	ft_lstadd_back(t_list **lst, t_list *new)
 static int	ms_type_check(t_list *new)
 {
 	t_list	*tmp;
-	int		min;
 
 	if (new->type != 0)
 		return (new->type);
 	tmp = new->prev;
-	min = 0;
-	while (tmp != 0 && tmp->type < 0)
-	{
-		if (tmp->type < min)
-			min = tmp->type;
-		tmp = tmp->prev;
-	}
-	if (min == -1)
+	if (tmp->type == -1)
 		return (1);
-	else if (min == -2)
+	else if (tmp->type == -2)
 		return (2);
-	else if (min == -3)
+	else if (tmp->type == -3)
 		return (3);
-	else if (min == -4)
+	else if (tmp->type == -4)
 		return (4);
 	else
 		return (0);

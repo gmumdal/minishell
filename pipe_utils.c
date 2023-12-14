@@ -6,7 +6,7 @@
 /*   By: jongmlee <jongmlee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 22:28:19 by jongmlee          #+#    #+#             */
-/*   Updated: 2023/12/13 20:50:11 by jongmlee         ###   ########.fr       */
+/*   Updated: 2023/12/14 21:08:45 by jongmlee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,11 @@
 
 void	open_pipe(t_info *info)
 {
-	if (pipe(info->pipe_fds[info->cur]) == -1)
-		perror_exit("pipe()", 1);
+	if (info->cnt != 1)
+	{
+		if (pipe(info->pipe_fds[info->cur]) == -1)
+			perror_exit("pipe()", 1);
+	}
 }
 
 void	close_pipe(t_info *info)
@@ -23,9 +26,9 @@ void	close_pipe(t_info *info)
 	int	i;
 
 	i = -1;
-	if (info->idx == 0 || (info->idx == 1 && info->is_heredoc == 1))
+	if (info->idx == 0)
 		close(info->pipe_fds[info->cur][0]);
-	else if (info->idx == 5)
+	else if (info->idx == info->cnt - 1)
 		close(info->pipe_fds[!info->cur][1]);
 	else
 	{
@@ -36,19 +39,15 @@ void	close_pipe(t_info *info)
 
 void	open_file(t_info *info)
 {
-	if (info->idx == 0 && info->data->infile != NULL)
+	if (info->data->delimeter != NULL)
+		here_doc(info);
+	else if (info->data->infile != NULL)
 	{
 		info->infile_fd = open(info->data->infile, O_RDONLY);
 		if (info->infile_fd == -1)
 			perror_exit(ft_strjoin("pipex: ", info->data->infile), 1);
 	}
-	else if (info->idx == 1 && info->is_heredoc == 1)
-	{
-		info->infile_fd = open(".heredoc_tmp", O_RDONLY);
-		if (info->infile_fd == -1)
-			perror_exit(ft_strjoin(".heredoc_tmp: ", info->data->infile), 1);
-	}
-	else if (info->idx == 5 && info->data->outfile != NULL)
+	if (info->data->outfile != NULL)
 	{
 		if (info->data->is_append == 1)
 			info->outfile_fd = open(info->data->outfile,
@@ -71,23 +70,17 @@ void	close_all_pipe(t_info *info)
 
 void	redirect(t_info *info)
 {
-	if (info->idx == 0)
-	{
-		if (info->data->infile == NULL)
-			dup2(info->pipe_fds[info->cur][1], STDOUT_FILENO);
-		else
-			dup2_sub(info->infile_fd, info->pipe_fds[info->cur][1]);
-	}
-	else if (info->idx == 5)
-	{
-		if (info->data->outfile == NULL)
-			dup2(info->pipe_fds[!info->cur][0], STDIN_FILENO);
-		else
-			dup2_sub(info->pipe_fds[!info->cur][0], info->outfile_fd);
-	}
-	else
+	if (info->idx == 0 && info->cnt != 1)
+		dup2(info->pipe_fds[info->cur][1], STDOUT_FILENO);
+	else if (info->idx == info->cnt - 1 && info->cnt != 1)
+		dup2(info->pipe_fds[!info->cur][0], STDIN_FILENO);
+	else if (info->cnt != 1)
 		dup2_sub(info->pipe_fds[!info->cur][0],
 			info->pipe_fds[info->cur][1]);
+	if (info->data->infile != NULL)
+		dup2(info->infile_fd, STDIN_FILENO);
+	if (info->data->outfile != NULL)
+		dup2(info->outfile_fd, STDOUT_FILENO);
 }
 
 void	dup2_sub(int first, int second)

@@ -6,7 +6,7 @@
 /*   By: jongmlee <jongmlee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 22:27:54 by jongmlee          #+#    #+#             */
-/*   Updated: 2023/12/13 20:51:40 by jongmlee         ###   ########.fr       */
+/*   Updated: 2023/12/14 20:58:39 by jongmlee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,10 +91,10 @@ int	execute_cmd(t_info *info)
 	char	*valid_path;
 
 	(void) info;
-	env_path = get_env_path(NULL);
+	env_path = get_env_path(info->envp);
 	if (env_path == NULL)
 		env_path = ft_strdup(BASIC_PATH);
-	cmds = NULL;
+	cmds = info->data->cmd_arr;
 	valid_path = get_valid_path(cmds, env_path);
 	if (valid_path == NULL)
 	{

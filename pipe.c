@@ -6,18 +6,20 @@
 /*   By: jongmlee <jongmlee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 22:25:31 by jongmlee          #+#    #+#             */
-/*   Updated: 2023/12/13 20:49:25 by jongmlee         ###   ########.fr       */
+/*   Updated: 2023/12/14 21:24:11 by jongmlee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	init_info(t_info *info, t_data *data)
+void	init_info(t_info *info, t_container *con)
 {
 	int	i;
 
 	i = 0;
-	info->data = data;
+	info->data = con->head;
+	info->cnt = con->cnt;
+	info->envp = con->envp;
 	info->idx = -1;
 	info->cur = 0;
 	while (i < 2)
@@ -55,10 +57,12 @@ int	wait_children(t_info *info)
 
 void	child(t_info *info)
 {
+	if (info->idx != 0)
+		info->data = info->data->next;
 	info->cur = info->idx % 2;
 	close(info->pipe_fds[info->cur][0]);
 	close(info->pipe_fds[info->cur][1]);
-	if (info->idx != 5)
+	if (info->idx != info->cnt - 1)
 		open_pipe(info);
 	info->last_pid = fork();
 	if (info->last_pid == -1)
@@ -102,12 +106,12 @@ void	here_doc(t_info *info)
 	close(info->infile_fd);
 }
 
-int	pipex(t_data *data)
+int	pipex(t_container *con)
 {
 	t_info	info;
 
-	init_info(&info, data);
-	while (++info.idx < 5)
+	init_info(&info, con);
+	while (++info.idx < info.cnt)
 		child(&info);
 	close_all_pipe(&info);
 	return (wait_children(&info));
