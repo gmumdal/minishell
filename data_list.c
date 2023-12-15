@@ -53,17 +53,8 @@ char	**make_cmd(t_list *list)
 	return (cmd);
 }
 
-t_data	*data_lstnew(t_list *line)
+void	check_type_and_dup_data(t_list *line, t_data *toss)
 {
-	t_data	*toss;
-
-	if (line == NULL)
-		return (NULL);
-	toss = (t_data *)malloc(sizeof(t_data));
-	if (toss == NULL)
-		exit(1);
-	init_data_node(toss);
-	toss->cmd_arr = make_cmd(line);
 	while (line != NULL && line->type != -5)
 	{
 		if (line->type == 1 || line->type == 2)
@@ -75,9 +66,26 @@ t_data	*data_lstnew(t_list *line)
 		else if (line->type == 3)
 			toss->infile = ft_strdup(line->data);
 		else if (line->type == 4)
+		{
 			toss->delimeter = ft_strdup(line->data);
+			heredoc(toss);
+		}
 		line = line->next;
 	}
+}
+
+t_data	*data_lstnew(t_list *line)
+{
+	t_data	*toss;
+
+	if (line == NULL)
+		return (NULL);
+	toss = (t_data *)malloc(sizeof(t_data));
+	if (toss == NULL)
+		exit(1);
+	init_data_node(toss);
+	toss->cmd_arr = make_cmd(line);
+	check_type_and_dup_data(line, toss);
 	return (toss);
 }
 

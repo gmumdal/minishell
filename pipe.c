@@ -6,7 +6,7 @@
 /*   By: jongmlee <jongmlee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 22:25:31 by jongmlee          #+#    #+#             */
-/*   Updated: 2023/12/14 21:24:11 by jongmlee         ###   ########.fr       */
+/*   Updated: 2023/12/15 13:58:05 by jongmlee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	init_info(t_info *info, t_container *con)
 	}
 }
 
-int	wait_children(t_info *info)
+int	wait_children(t_info *info, t_data *head)
 {
 	int	i;
 	int	wstatus;
@@ -52,10 +52,11 @@ int	wait_children(t_info *info)
 				exit_code = WTERMSIG(wstatus);
 		}
 	}
+	delete_all_heredoc_tmpfile(head);
 	return (exit_code);
 }
 
-void	child(t_info *info)
+void	child(t_info *info, t_container *con)
 {
 	if (info->idx != 0)
 		info->data = info->data->next;
@@ -67,7 +68,7 @@ void	child(t_info *info)
 	info->last_pid = fork();
 	if (info->last_pid == -1)
 	{
-		wait_children(info);
+		wait_children(info, con->head);
 		perror_exit("fork()", 1);
 	}
 	if (info->last_pid == 0)
@@ -80,39 +81,13 @@ void	child(t_info *info)
 	}
 }
 
-void	here_doc(t_info *info)
-{
-	char	*line;
-	char	*delimeter;
-
-	unlink(".heredoc_tmp");
-	info->infile_fd = open(".heredoc_tmp", O_CREAT | O_WRONLY | O_TRUNC, 0644);
-	if (info->infile_fd < 0)
-		perror_exit("open()", 1);
-	delimeter = NULL;
-	while (1)
-	{
-		write(1, "heredoc> ", 9);
-		line = get_next_line(0);
-		if (!line)
-			exit(1);
-		if (!ft_strncmp(delimeter, line, ft_strlen(delimeter))
-			&& ft_strlen(delimeter) == (ft_strlen(line) - 1))
-			break ;
-		write(info->infile_fd, line, ft_strlen(line));
-		free(line);
-	}
-	free(line);
-	close(info->infile_fd);
-}
-
 int	pipex(t_container *con)
 {
 	t_info	info;
 
 	init_info(&info, con);
 	while (++info.idx < info.cnt)
-		child(&info);
+		child(&info, con);
 	close_all_pipe(&info);
-	return (wait_children(&info));
+	return (wait_children(&info, con->head));
 }

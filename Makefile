@@ -1,7 +1,7 @@
 NAME = minishell
 SRCS = main.c ms_pasing.c ms_split.c \
 debug.c data_list.c ms_utils1.c \
-pipe.c pipe_utils.c pipe_parse.c pipe_exit.c
+pipe.c pipe_utils.c pipe_parse.c pipe_exit.c heredoc.c
 INCS = minishell.h
 LIBFT = -Ilibft -Llibft -lft
 READ = -lreadline

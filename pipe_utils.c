@@ -6,7 +6,7 @@
 /*   By: jongmlee <jongmlee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 22:28:19 by jongmlee          #+#    #+#             */
-/*   Updated: 2023/12/14 21:08:45 by jongmlee         ###   ########.fr       */
+/*   Updated: 2023/12/15 13:37:09 by jongmlee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,13 +39,11 @@ void	close_pipe(t_info *info)
 
 void	open_file(t_info *info)
 {
-	if (info->data->delimeter != NULL)
-		here_doc(info);
-	else if (info->data->infile != NULL)
+	if (info->data->infile != NULL)
 	{
 		info->infile_fd = open(info->data->infile, O_RDONLY);
 		if (info->infile_fd == -1)
-			perror_exit(ft_strjoin("pipex: ", info->data->infile), 1);
+			perror_exit(ft_strjoin("minishell: ", info->data->infile), 1);
 	}
 	if (info->data->outfile != NULL)
 	{
@@ -56,7 +54,7 @@ void	open_file(t_info *info)
 			info->outfile_fd = open(info->data->outfile,
 					O_CREAT | O_WRONLY | O_TRUNC, 0644);
 		if (info->outfile_fd == -1)
-			perror_exit(ft_strjoin("pipex: ", info->data->outfile), 1);
+			perror_exit(ft_strjoin("minishell: ", info->data->outfile), 1);
 	}
 }
 
@@ -75,18 +73,12 @@ void	redirect(t_info *info)
 	else if (info->idx == info->cnt - 1 && info->cnt != 1)
 		dup2(info->pipe_fds[!info->cur][0], STDIN_FILENO);
 	else if (info->cnt != 1)
-		dup2_sub(info->pipe_fds[!info->cur][0],
-			info->pipe_fds[info->cur][1]);
+	{
+		dup2(info->pipe_fds[!info->cur][0], STDIN_FILENO);
+		dup2(info->pipe_fds[info->cur][1], STDOUT_FILENO);
+	}
 	if (info->data->infile != NULL)
 		dup2(info->infile_fd, STDIN_FILENO);
 	if (info->data->outfile != NULL)
 		dup2(info->outfile_fd, STDOUT_FILENO);
-}
-
-void	dup2_sub(int first, int second)
-{
-	if (dup2(first, STDIN_FILENO) == -1)
-		perror_exit("dup2()", 1);
-	if (dup2(second, STDOUT_FILENO) == -1)
-		perror_exit("dup2()", 1);
 }

@@ -6,7 +6,7 @@
 /*   By: jongmlee <jongmlee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 16:53:34 by hyeongsh          #+#    #+#             */
-/*   Updated: 2023/12/14 19:12:45 by jongmlee         ###   ########.fr       */
+/*   Updated: 2023/12/15 13:59:27 by jongmlee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,15 +108,18 @@ void	open_pipe(t_info *info);
 void	close_pipe(t_info *info);
 void	open_file(t_info *info);
 void	close_all_pipe(t_info *info);
-void	dup2_sub(int first, int second);
 void	redirect(t_info *info);
 
 /* pipe */
-int		wait_children(t_info *info);
+int		wait_children(t_info *info, t_data *head);
 void	init_info(t_info *info, t_container *con);
-void	child(t_info *info);
-void	here_doc(t_info *info);
+void	child(t_info *info, t_container *con);
 int		pipex(t_container *con);
+
+/* heredoc */
+void	heredoc(t_data *info);
+char	*get_heredoc_tmpfile_name(void);
+void	delete_all_heredoc_tmpfile(t_data *head);
 
 /* data_list */
 void	init_data_node(t_data *node);
@@ -125,7 +128,7 @@ t_data	*data_lstnew(t_list *line);
 t_data	*data_lstlast(t_data *lst);
 void	data_lstadd_back(t_data **lst, t_data *new);
 t_data	*make_data_list(t_list *line);
-int	get_data_list_len(t_data *lst);
+int		get_data_list_len(t_data *lst);
 void	init_container(t_container *con, t_list *line, char **envp);
 
 

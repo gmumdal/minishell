@@ -6,7 +6,7 @@
 /*   By: jongmlee <jongmlee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 16:50:33 by hyeongsh          #+#    #+#             */
-/*   Updated: 2023/12/14 21:18:35 by jongmlee         ###   ########.fr       */
+/*   Updated: 2023/12/15 13:12:03 by jongmlee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int	main(int ac, char **av, char **envp)
 		if (head != NULL)
 		{
 			init_container(&con, head, envp);
-			print_container(&con);
+			//print_container(&con);
 			pipex(&con);
 			//t_list	*tmp;
 			//tmp = head;
@@ -40,10 +40,6 @@ int	main(int ac, char **av, char **envp)
 			//	printf("data: [%s] type: [%d] \n", tmp->data, tmp->type);
 			//	tmp = tmp->next;
 			//}
-//			data = make_data_list(tmp);
-			//print_data(&data);
-//			pipex(&data);
-			// TODO: clear data
 		}
 		ft_lstclear(&head, free);
 		free(line);
