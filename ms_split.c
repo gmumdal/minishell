@@ -6,7 +6,7 @@
 /*   By: hyeongsh <hyeongsh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/03 16:02:17 by hyeongsh          #+#    #+#             */
-/*   Updated: 2023/12/13 20:33:05 by hyeongsh         ###   ########.fr       */
+/*   Updated: 2023/12/16 17:02:34 by hyeongsh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ char	**ms_split(char *cmd)
 		toss[count] = (char *)ft_calloc(wordlen + 1, sizeof(char));
 		if (toss[count] == 0)
 			error_print(errno);
-		if (ms_split_input(toss[count], &cmd, "<>|&();") == -1)
+		if (ms_split_input(toss[count], &cmd, "|<>&;\\") == -1)
 			return (NULL);
 		count++;
 	}
@@ -63,11 +63,20 @@ int	ms_split_input(char *toss, char **cmd, char *oper)
 
 int	ms_split_first(char *toss, char **cmd, char *oper)
 {
-	int		i;
+	int	i;
+	int	init;
+	int	tmp;
 
 	i = 0;
-	while (ms_init(**cmd, oper) > -1)
+	init = ms_init(**cmd, oper);
+	while (42)
+	{
+		tmp = ms_init(**cmd, oper);
+		if (tmp == -1 || init != tmp)
+			break ;
 		toss[i++] = *(*cmd)++;
+		init = tmp;
+	}
 	while (**cmd == ' ')
 		(*cmd)++;
 	return (i);

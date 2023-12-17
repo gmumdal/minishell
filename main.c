@@ -6,7 +6,7 @@
 /*   By: hyeongsh <hyeongsh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 16:50:33 by hyeongsh          #+#    #+#             */
-/*   Updated: 2023/12/13 22:12:40 by hyeongsh         ###   ########.fr       */
+/*   Updated: 2023/12/16 21:56:37 by hyeongsh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,26 +14,27 @@
 
 int	main(int ac, char **av, char **envp)
 {
-	t_list		*head;
+	t_token		*head;
 	char		*line;
-	//t_container	con;
+	t_container	con;
 
 	(void) ac;
 	(void) av;
-	(void) envp;
+	// (void) envp;
+	con.envp = ms_2d_arr_dup(envp);
 	while (42)
 	{
 		line = readline("mish> ");
 		if (!line)
 			break ;
 		add_history(line);
-		head = pasing(line);
+		head = parsing(line, con.envp);
 		if (head != NULL)
 		{
 			//init_container(&con, head, envp);
 			//print_container(&con);
 			//pipex(&data);
-			t_list	*tmp;
+			t_token	*tmp;
 			tmp = head;
 			while (tmp != NULL)
 			{
@@ -45,7 +46,7 @@ int	main(int ac, char **av, char **envp)
 //			pipex(&data);
 			// TODO: clear data
 		}
-		ft_lstclear(&head, free);
+		ms_tokenclear(&head, free);
 		free(line);
 	}
 	return (0);

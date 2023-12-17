@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jongmlee <jongmlee@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hyeongsh <hyeongsh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 16:53:34 by hyeongsh          #+#    #+#             */
-/*   Updated: 2023/12/13 21:56:51 by jongmlee         ###   ########.fr       */
+/*   Updated: 2023/12/16 21:52:59 by hyeongsh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,9 @@
 
 # include "libft.h"
 # include <unistd.h>
+# include <stdio.h>
+# include <errno.h>
+# include <string.h>
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <sys/wait.h>
@@ -65,7 +68,15 @@ typedef struct s_info
 	t_data	*data;
 }	t_info;
 
-t_list	*pasing(char *line);
+typedef struct s_token
+{
+	char			*data;
+	struct s_token	*next;
+	struct s_token	*prev;
+	int				type;
+}	t_token;
+
+t_token	*parsing(char *line, char **envp);
 void	split_free(char **command);
 
 int		ms_init(char c, char *s);
@@ -73,6 +84,14 @@ int		ms_split_input(char *toss, char **cmd, char *oper);
 int		ms_split_first(char *toss, char **cmd, char *oper);
 int		ms_split_plus(char *toss, int *i, char **cmd);
 char	**ms_split(char *cmd);
+
+t_token	*ms_tokennew(char *data, char **envp);
+void	ms_tokenclear(t_token **token, void (*del)(void *));
+int		ms_tokenadd_back(t_token **token, t_token *new);
+
+void	error_print(int flag);
+int		ft_init(char *s, char *data);
+char	*expend_list(char *data, char **envp);
 
 /* debug */
 void	print_2d_arr(char **s);
@@ -124,8 +143,7 @@ t_data	*data_lstnew(t_list *line);
 t_data	*data_lstlast(t_data *lst);
 void	data_lstadd_back(t_data **lst, t_data *new);
 t_data	*make_data_list(t_list *line);
-int	get_data_list_len(t_data *lst);
+int		get_data_list_len(t_data *lst);
 void	init_container(t_container *con, t_list *line, char **envp);
-
 
 #endif

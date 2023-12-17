@@ -1,28 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstclear_bonus.c                                :+:      :+:    :+:   */
+/*   ms_tokenclear.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyeongsh <hyeongsh@student.42seoul.>       +#+  +:+       +#+        */
+/*   By: hyeongsh <hyeongsh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/08 21:12:19 by hyeongsh          #+#    #+#             */
-/*   Updated: 2023/10/11 13:12:12 by hyeongsh         ###   ########.fr       */
+/*   Updated: 2023/12/16 20:42:57 by hyeongsh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "minishell.h"
 
-void	ft_lstclear(t_list **lst, void (*del)(void *))
+void	ms_tokendelone(t_token *token, void (*del)(void *));
+
+void	ms_tokenclear(t_token **token, void (*del)(void *))
 {
-	t_list	*cur;
+	t_token	*cur;
 
-	if (lst == 0 || del == 0)
+	if (token == 0 || del == 0)
 		return ;
-	while (*lst != NULL)
+	while (*token != NULL)
 	{
-		cur = *lst;
-		*lst = (*lst)->next;
-		ft_lstdelone(cur, del);
+		cur = *token;
+		*token = (*token)->next;
+		ms_tokendelone(cur, del);
 	}
-	*lst = 0;
+	*token = 0;
+}
+
+void	ms_tokendelone(t_token *token, void (*del)(void *))
+{
+	if (token == 0 || del == 0)
+		return ;
+	del(token->data);
+	free(token);
 }

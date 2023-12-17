@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstmap.c                                        :+:      :+:    :+:   */
+/*   ft_lstmap_bonus.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyeongsh <hyeongsh@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hyeongsh <hyeongsh@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/08 21:17:51 by hyeongsh          #+#    #+#             */
-/*   Updated: 2023/12/08 15:20:19 by hyeongsh         ###   ########.fr       */
+/*   Updated: 2023/10/11 14:14:07 by hyeongsh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *))
 	head = 0;
 	while (lst != NULL)
 	{
-		tempcon = f(lst->data);
+		tempcon = f(lst->content);
 		cur = ft_lstnew(tempcon);
 		ft_lstadd_back(&head, cur);
 		if (cur == 0)
