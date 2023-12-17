@@ -6,7 +6,7 @@
 /*   By: hyeongsh <hyeongsh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/16 16:18:05 by hyeongsh          #+#    #+#             */
-/*   Updated: 2023/12/17 17:10:31 by hyeongsh         ###   ########.fr       */
+/*   Updated: 2023/12/17 18:10:16 by hyeongsh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,8 @@ static int	make_expend(char *expend, char *data, int *i, int type)
 	j = 0;
 	while (data[*i])
 	{
-		if (quote == 0 && (data[*i] == '\'' || data[*i] == '\"') && (*i)++ > -1)
+		if (quote == 0 && type == 0 && (data[*i] == '\'' || data[*i] == '\"')
+			&& (*i)++ > -1)
 			quote = 1 * (data[*i - 1] == '\'') + 2 * (data[*i - 1] == '\"');
 		if ((quote == 0 || quote == 2) && data[*i] == '$' && j > 0)
 			break ;
