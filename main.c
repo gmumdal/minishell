@@ -6,7 +6,7 @@
 /*   By: hyeongsh <hyeongsh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 16:50:33 by hyeongsh          #+#    #+#             */
-/*   Updated: 2023/12/16 21:56:37 by hyeongsh         ###   ########.fr       */
+/*   Updated: 2023/12/18 14:40:33 by hyeongsh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@ int	main(int ac, char **av, char **envp)
 
 	(void) ac;
 	(void) av;
-	// (void) envp;
 	con.envp = ms_2d_arr_dup(envp);
 	while (42)
 	{
