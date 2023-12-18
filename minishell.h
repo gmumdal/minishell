@@ -6,7 +6,7 @@
 /*   By: jongmlee <jongmlee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 16:53:34 by hyeongsh          #+#    #+#             */
-/*   Updated: 2023/12/15 13:59:27 by jongmlee         ###   ########.fr       */
+/*   Updated: 2023/12/16 21:37:39 by jongmlee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,12 +27,14 @@
 # include <termios.h>
 # include <term.h>
 # include <fcntl.h>
+# include <errno.h>
 
+# define MAXSIZE 1024
 # define PATH "PATH="
 # define BASIC_PATH "/usr/local/bin:/usr/bin:/bin:\
 	/usr/sbin:/sbin:/usr/local/munki:/Library/Apple/usr/bin"
 # define CMD_NOT_FOUND_ERR ": command not found\n"
-# define HEREDOC "here_doc"
+# define ERROR 1
 
 struct sigaction	sig;
 
@@ -40,6 +42,7 @@ typedef struct s_container
 {
 	struct s_data	*head;
 	char			**envp;
+	char			*tmp_pwd;
 	int				cnt;
 }	t_container;
 

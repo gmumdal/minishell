@@ -3,6 +3,7 @@
 		"algorithm": "c",
 		"chrono": "c",
 		"limits": "c",
-		"ratio": "c"
+		"ratio": "c",
+		"readline.h": "c"
 	}
 }
