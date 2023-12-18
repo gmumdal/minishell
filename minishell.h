@@ -6,7 +6,7 @@
 /*   By: hyeongsh <hyeongsh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 16:53:34 by hyeongsh          #+#    #+#             */
-/*   Updated: 2023/12/18 14:56:34 by hyeongsh         ###   ########.fr       */
+/*   Updated: 2023/12/18 21:16:40 by hyeongsh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,21 +80,32 @@ typedef struct s_token
 	int				type;
 }	t_token;
 
+/* parsing.c */
 t_token	*parsing(char *line, char **envp);
 void	split_free(char **command);
 
+/* termios.c */
+void	save_input_mode(struct termios *old_term);
+void	set_input_mode(struct termios *new_term);
+void	reset_input_mode(struct termios *old_term);
+
+/* ms_split.c */
 int		ms_init(char c, char *s);
 int		ms_split_input(char *toss, char **cmd, char *oper);
 int		ms_split_first(char *toss, char **cmd, char *oper);
 int		ms_split_plus(char *toss, int *i, char **cmd);
 char	**ms_split(char *cmd);
 
+/* ms_token.c */
 t_token	*ms_tokennew(char *data, char **envp);
 void	ms_tokenclear(t_token **token, void (*del)(void *));
 int		ms_tokenadd_back(t_token **token, t_token *new);
 
+/* side_utils.c */
 void	error_print(int flag);
 int		ft_init(char *s, char *data);
+
+/* ms_expend_edit.c */
 char	*expend_list(char *data, char **envp);
 
 /* debug */
