@@ -6,7 +6,7 @@
 /*   By: jongmlee <jongmlee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 22:27:54 by jongmlee          #+#    #+#             */
-/*   Updated: 2023/12/13 20:51:40 by jongmlee         ###   ########.fr       */
+/*   Updated: 2023/12/15 13:40:50 by jongmlee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,16 +91,16 @@ int	execute_cmd(t_info *info)
 	char	*valid_path;
 
 	(void) info;
-	env_path = get_env_path(NULL);
+	env_path = get_env_path(info->envp);
 	if (env_path == NULL)
 		env_path = ft_strdup(BASIC_PATH);
-	cmds = NULL;
+	cmds = info->data->cmd_arr;
 	valid_path = get_valid_path(cmds, env_path);
 	if (valid_path == NULL)
 	{
-		ft_putstr_fd(ft_strjoin("pipex: ", cmds[0]), 2);
+		ft_putstr_fd(ft_strjoin("minishell: ", cmds[0]), 2);
 		ft_putstr_fd(CMD_NOT_FOUND_ERR, 2);
 		exit(127);
 	}
-	return (execve(valid_path, cmds, NULL));
+	return (execve(valid_path, cmds, info->envp));
 }

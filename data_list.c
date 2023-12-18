@@ -10,7 +10,7 @@ void	init_data_node(t_data *node)
 	node->next = NULL;
 }
 
-int		get_cmd_arr_len(t_list *lst)
+int	get_cmd_arr_len(t_token *lst)
 {
 	int	len;
 
@@ -24,9 +24,9 @@ int		get_cmd_arr_len(t_list *lst)
 	return (len);
 }
 
-char	**make_cmd(t_list *list)
+char	**make_cmd(t_token *list)
 {
-	t_list 	*tmp;
+	t_token	*tmp;
 	int		i;
 	int		len;
 	char	**cmd;
@@ -53,18 +53,8 @@ char	**make_cmd(t_list *list)
 	return (cmd);
 }
 
-t_data	*data_lstnew(t_list *line)
+void	check_type_and_dup_data(t_token *line, t_data *toss)
 {
-	t_data	*toss;
-
-	if (line == NULL)
-		return (NULL);
-	toss = (t_data *)malloc(sizeof(t_data));
-	if (toss == NULL)
-		exit(1);
-	init_data_node(toss);
-	print_node(line);
-	toss->cmd_arr = make_cmd(line);
 	while (line != NULL && line->type != -5)
 	{
 		if (line->type == 1 || line->type == 2)
@@ -76,9 +66,26 @@ t_data	*data_lstnew(t_list *line)
 		else if (line->type == 3)
 			toss->infile = ft_strdup(line->data);
 		else if (line->type == 4)
+		{
 			toss->delimeter = ft_strdup(line->data);
+			heredoc(toss);
+		}
 		line = line->next;
 	}
+}
+
+t_data	*data_lstnew(t_token *line)
+{
+	t_data	*toss;
+
+	if (line == NULL)
+		return (NULL);
+	toss = (t_data *)malloc(sizeof(t_data));
+	if (toss == NULL)
+		exit(1);
+	init_data_node(toss);
+	toss->cmd_arr = make_cmd(line);
+	check_type_and_dup_data(line, toss);
 	return (toss);
 }
 
@@ -106,7 +113,7 @@ void	data_lstadd_back(t_data **lst, t_data *new)
 		*lst = new;
 }
 
-t_data	*make_data_list(t_list *line)
+t_data	*make_data_list(t_token *line)
 {
 	t_data	*head;
 
@@ -139,7 +146,7 @@ int	get_data_list_len(t_data *lst)
 	return (len);
 }
 
-void	init_container(t_container *con, t_list *line, char **envp)
+void	init_container(t_container *con, t_token *line, char **envp)
 {
 	con->head = make_data_list(line);
 	con->envp = ms_2d_arr_dup(envp);

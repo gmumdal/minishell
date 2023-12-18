@@ -36,7 +36,7 @@ void	print_3d_arr(char ***s)
 	}
 }
 
-void	print_node(t_list *list)
+void	print_node(t_token *list)
 {
 	printf("\n====print_node====\n");
 	printf("list->data -> %s\n", list->data);
@@ -57,8 +57,8 @@ void	print_data(t_data *data)
 	print_data_node(data);
 	while (data->next != NULL)
 	{
-		print_data_node(data);
 		data = data->next;
+		print_data_node(data);
 	}
 }
 

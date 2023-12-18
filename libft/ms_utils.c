@@ -1,21 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstadd_front.c                                  :+:      :+:    :+:   */
+/*   ms_utils.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hyeongsh <hyeongsh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/08 20:45:23 by hyeongsh          #+#    #+#             */
-/*   Updated: 2023/12/18 14:56:41 by hyeongsh         ###   ########.fr       */
+/*   Created: 2023/12/13 21:33:16 by hyeongsh          #+#    #+#             */
+/*   Updated: 2023/12/13 21:34:00 by hyeongsh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	ft_lstadd_front(t_list **lst, t_list *new)
+void	error_print(int flag)
 {
-	if (lst == 0 || new == 0)
-		return ;
-	new->next = *lst;
-	*lst = new;
+	ft_putstr_fd("mish: ", 2);
+	if (flag == 2)
+		ft_putstr_fd("input: ", 2);
+	ft_putstr_fd(strerror(flag), 2);
+	ft_putstr_fd("\n", 2);
+	if (flag == 126)
+		exit(126);
+	exit(1);
 }

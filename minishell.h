@@ -6,7 +6,7 @@
 /*   By: hyeongsh <hyeongsh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 16:53:34 by hyeongsh          #+#    #+#             */
-/*   Updated: 2023/12/16 21:52:59 by hyeongsh         ###   ########.fr       */
+/*   Updated: 2023/12/18 14:56:34 by hyeongsh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,12 +30,14 @@
 # include <termios.h>
 # include <term.h>
 # include <fcntl.h>
+# include <errno.h>
 
+# define MAXSIZE 1024
 # define PATH "PATH="
 # define BASIC_PATH "/usr/local/bin:/usr/bin:/bin:\
 	/usr/sbin:/sbin:/usr/local/munki:/Library/Apple/usr/bin"
 # define CMD_NOT_FOUND_ERR ": command not found\n"
-# define HEREDOC "here_doc"
+# define ERROR 1
 
 struct sigaction	sig;
 
@@ -43,6 +45,7 @@ typedef struct s_container
 {
 	struct s_data	*head;
 	char			**envp;
+	char			*tmp_pwd;
 	int				cnt;
 }	t_container;
 
@@ -64,7 +67,8 @@ typedef struct s_info
 	int		outfile_fd;
 	int		idx;
 	int		cur;
-	int		is_heredoc;
+	int		cnt;
+	char	**envp;
 	t_data	*data;
 }	t_info;
 
@@ -96,17 +100,17 @@ char	*expend_list(char *data, char **envp);
 /* debug */
 void	print_2d_arr(char **s);
 void	print_3d_arr(char ***s);
-void	print_node(t_list *list);
+void	print_node(t_token *list);
 void	print_data(t_data *data);
 void	print_data_node(t_data *data);
 void	print_container(t_container *con);
 
 /* init_data */
-char	**make_cmd(t_list *list);
-int		get_cmd_arr_len(t_list *lst);
-t_list	*check_type_and_move_list(t_data *data, t_list *list);
-char	***make_cmd_arr(t_data *data, t_list *list);
-void	init_data(t_data *data, t_list *list, char **envp);
+char	**make_cmd(t_token *list);
+int		get_cmd_arr_len(t_token *lst);
+t_token	*check_type_and_move_list(t_data *data, t_token *list);
+char	***make_cmd_arr(t_data *data, t_token *list);
+void	init_data(t_data *data, t_token *list, char **envp);
 
 /* ms_utils1 */
 char	**ms_2d_arr_dup(char **s);
@@ -126,24 +130,27 @@ void	open_pipe(t_info *info);
 void	close_pipe(t_info *info);
 void	open_file(t_info *info);
 void	close_all_pipe(t_info *info);
-void	dup2_sub(int first, int second);
 void	redirect(t_info *info);
 
 /* pipe */
-int		wait_children(t_info *info);
-void	init_info(t_info *info, t_data *data);
-void	child(t_info *info);
-void	here_doc(t_info *info);
-int		pipex(t_data *data);
+int		wait_children(t_info *info, t_data *head);
+void	init_info(t_info *info, t_container *con);
+void	child(t_info *info, t_container *con);
+int		pipex(t_container *con);
+
+/* heredoc */
+void	heredoc(t_data *info);
+char	*get_heredoc_tmpfile_name(void);
+void	delete_all_heredoc_tmpfile(t_data *head);
 
 /* data_list */
 void	init_data_node(t_data *node);
-int		get_cmd_arr_len(t_list *lst);
-t_data	*data_lstnew(t_list *line);
+int		get_cmd_arr_len(t_token *lst);
+t_data	*data_lstnew(t_token *line);
 t_data	*data_lstlast(t_data *lst);
 void	data_lstadd_back(t_data **lst, t_data *new);
-t_data	*make_data_list(t_list *line);
+t_data	*make_data_list(t_token *line);
 int		get_data_list_len(t_data *lst);
-void	init_container(t_container *con, t_list *line, char **envp);
+void	init_container(t_container *con, t_token *line, char **envp);
 
 #endif
