@@ -6,7 +6,7 @@
 /*   By: hyeongsh <hyeongsh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 16:50:33 by hyeongsh          #+#    #+#             */
-/*   Updated: 2023/12/18 15:04:37 by hyeongsh         ###   ########.fr       */
+/*   Updated: 2023/12/18 15:06:21 by hyeongsh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ int	main(int ac, char **av, char **envp)
 		head = parsing(line, con.envp);
 		if (head == NULL)
 			error_print(errno);
+		init_container(&con, head, envp);
 		pipex(&con);
 		ms_tokenclear(&head, free);
 		free(line);
