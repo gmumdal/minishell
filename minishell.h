@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyeongsh <hyeongsh@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jongmlee <jongmlee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 16:53:34 by hyeongsh          #+#    #+#             */
-/*   Updated: 2023/12/18 14:56:34 by hyeongsh         ###   ########.fr       */
+/*   Updated: 2023/12/18 21:05:12 by jongmlee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,8 @@ typedef struct s_container
 {
 	struct s_data	*head;
 	char			**envp;
-	char			*tmp_pwd;
+	char			*old_pwd;
+	char			*pwd;
 	int				cnt;
 }	t_container;
 
@@ -119,7 +120,7 @@ char	**ms_2d_arr_dup(char **s);
 char	*get_path(char **envp);
 char	*make_cmd_path(char const *path, char const *cmd);
 char	*get_valid_path(char **cmds, char *env_path);
-int		execute_cmd(t_info *info);
+int		execute_cmd(t_info *info, t_container *con);
 
 /* pipe_exit */
 void	free_2d_array(char **arr);

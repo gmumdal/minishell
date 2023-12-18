@@ -6,7 +6,7 @@
 /*   By: jongmlee <jongmlee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 22:27:54 by jongmlee          #+#    #+#             */
-/*   Updated: 2023/12/15 13:40:50 by jongmlee         ###   ########.fr       */
+/*   Updated: 2023/12/18 21:05:15 by jongmlee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,18 +84,25 @@ char	*get_valid_path(char **cmds, char *env_path)
 	return (NULL);
 }
 
-int	execute_cmd(t_info *info)
+int	execute_cmd(t_info *info, t_container *con)
 {
 	char	**cmds;
 	char	*env_path;
 	char	*valid_path;
 
-	(void) info;
+	cmds = info->data->cmd_arr;
+	if (check_builtin(cmds[0]) == 0)
+	{
+		execute_builtin(cmds, con);
+		exit(0);
+	}
 	env_path = get_env_path(info->envp);
 	if (env_path == NULL)
 		env_path = ft_strdup(BASIC_PATH);
-	cmds = info->data->cmd_arr;
-	valid_path = get_valid_path(cmds, env_path);
+	if (access(cmds[0], X_OK) == 0 && ft_strchr(cmds[0], '/') != 0)
+		valid_path = cmds[0];
+	else
+		valid_path = get_valid_path(cmds, env_path);
 	if (valid_path == NULL)
 	{
 		ft_putstr_fd(ft_strjoin("minishell: ", cmds[0]), 2);

@@ -3,14 +3,30 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyeongsh <hyeongsh@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jongmlee <jongmlee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 16:50:33 by hyeongsh          #+#    #+#             */
-/*   Updated: 2023/12/18 15:06:21 by hyeongsh         ###   ########.fr       */
+/*   Updated: 2023/12/18 21:11:24 by jongmlee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	pre_init_container(t_container *con, char **envp)
+{
+	char	*buffer;
+	char	*cur_path;
+
+	buffer = (char *)malloc(sizeof(char) * MAXSIZE);
+	if (buffer == NULL)
+		perror_exit("malloc()", 1);
+	cur_path = getcwd(buffer, MAXSIZE);
+	if (cur_path == NULL)
+		perror_exit("getcwd()", 1);
+	con->old_pwd = cur_path;
+	con->pwd = ft_strdup(cur_path);
+	con->envp = ms_2d_arr_dup(envp);
+}
 
 int	main(int ac, char **av, char **envp)
 {
@@ -20,6 +36,7 @@ int	main(int ac, char **av, char **envp)
 
 	(void) ac;
 	(void) av;
+	pre_init_container(&con, envp);
 	con.envp = ms_2d_arr_dup(envp);
 	while (42)
 	{

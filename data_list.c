@@ -149,6 +149,5 @@ int	get_data_list_len(t_data *lst)
 void	init_container(t_container *con, t_token *line, char **envp)
 {
 	con->head = make_data_list(line);
-	con->envp = ms_2d_arr_dup(envp);
 	con->cnt = get_data_list_len(con->head);
 }

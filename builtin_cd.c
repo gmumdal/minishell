@@ -1,39 +1,44 @@
 #include "minishell.h"
 
-void	set_pwd_and_oldpwd(t_container *con)
-{
-	char	*cur_pwd;
-	char	*old_pwd;
-	char	*tmp;
-
-	tmp = malloc(sizeof(char) * MAXSIZE);
-	if (getcwd(tmp, MAXSIZE) == -1)
-		con->tmp_pwd;
-	cur_pwd = ft_strjoin("PWD=", getcwd(tmp, MAXSIZE));
-	old_pwd = ft_strjoin("OLDPWD=", find_value("PWD", ));
-	check_export(cur_pwd, );
-	check_export(old_pwd, );
-	free(cur_pwd);
-	free(old_pwd);
-}
-
-
-void	builtin_cd(char **cmds, t_container *con)
+int	builtin_cd(char **cmds, t_container *con)
 {
 	char	*path;
 	char	*tmp;
 	int		is_error;
 
-	path = NULL;
 	is_error = 0;
-	if (cmds[1] == NULL || (cmds[1][0] == '~' && cmds[1][1] == '\0'))
-		cd_home(path, cmds, con);
+	tmp = (char *)malloc(sizeof(char) * MAXSIZE);
+	if (tmp == NULL)
+		perror_exit("malloc()", 1);
+	path = cmds[1];
+	if (getcwd(tmp, MAXSIZE) == NULL)
+	{
+		if (errno == ENOENT)
+			path = find_env_value("HOME=", con->envp);
+		else
+			error_print(errno);
+		return (1);
+	}
+	//if (cmds[1] == NULL)
+	//	cd_home(path, cmds, con);
+	//else
+	//{
+	if (chdir(path) == -1)
+		is_error = print_execute_error("cd", path, strerror(errno));
 	else
 	{
-		path = cmds[1];
-		if (chdir(path) == -1)
-			is_error = print_execute_error("cd", path, strerror(errno));
-		tmp = ft_strjoin();
-		set_pwd_and_oldpwd(con);
+		free(con->old_pwd);
+		con->old_pwd = con->pwd;
+		if (find_env_value("OLDPWD=", con->envp) != NULL)
+			replace_env_value("OLDPWD=", con->old_pwd, con);
+		if (getcwd(tmp, MAXSIZE) == NULL)
+		{
+			error_print(errno);
+			return (1);
+		}
+		free(con->pwd);
+		con->pwd = tmp;
+		if (find_env_value("PWD=", con->envp) != NULL)
+			replace_env_value("PWD=", con->pwd, con);
 	}
 }
