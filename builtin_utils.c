@@ -14,4 +14,5 @@ int	execute_builtin(char **cmds, t_container *con)
 {
 	if (!ft_strncmp(cmds[0], "cd", 3))
 		return (builtin_cd(cmds, con));
+	return (0);
 }

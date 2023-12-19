@@ -6,7 +6,7 @@
 /*   By: jongmlee <jongmlee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 22:25:31 by jongmlee          #+#    #+#             */
-/*   Updated: 2023/12/15 13:58:05 by jongmlee         ###   ########.fr       */
+/*   Updated: 2023/12/19 09:53:53 by jongmlee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ void	child(t_info *info, t_container *con)
 		open_file(info);
 		close_pipe(info);
 		redirect(info);
-		if (execute_cmd(info) == -1)
+		if (execute_cmd(info, con) == -1)
 			perror_exit("execve()", 1);
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: jongmlee <jongmlee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 16:53:34 by hyeongsh          #+#    #+#             */
-/*   Updated: 2023/12/18 21:05:12 by jongmlee         ###   ########.fr       */
+/*   Updated: 2023/12/19 11:45:38 by jongmlee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,6 @@ typedef struct s_container
 {
 	struct s_data	*head;
 	char			**envp;
-	char			*old_pwd;
 	char			*pwd;
 	int				cnt;
 }	t_container;
@@ -105,6 +104,7 @@ void	print_node(t_token *list);
 void	print_data(t_data *data);
 void	print_data_node(t_data *data);
 void	print_container(t_container *con);
+void	print_pwd_oldpwd(t_container *con);
 
 /* init_data */
 char	**make_cmd(t_token *list);
@@ -152,6 +152,20 @@ t_data	*data_lstlast(t_data *lst);
 void	data_lstadd_back(t_data **lst, t_data *new);
 t_data	*make_data_list(t_token *line);
 int		get_data_list_len(t_data *lst);
-void	init_container(t_container *con, t_token *line, char **envp);
+void	init_container(t_container *con, t_token *line);
+
+/* error_execute */
+int	print_execute_error(char *cmd, char *path, char *error_msg);
+
+/* builtin_utils */
+int	check_builtin(char *s);
+int	execute_builtin(char **cmds, t_container *con);
+
+/* builtin_cd */
+char	*get_env_value(char *env, char **envp);
+int	builtin_cd(char **cmds, t_container *con);
+
+/* main */
+void	pre_init_container(t_container *con, char **envp);
 
 #endif

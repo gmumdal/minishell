@@ -67,3 +67,10 @@ void	print_container(t_container *con)
 	printf("con->cnt -> %d\n", con->cnt);
 	print_data(con->head);
 }
+
+void	print_pwd_oldpwd(t_container *con)
+{
+	printf("\ncon->pwd : %s\n", con->pwd);
+	printf("$PWD : %s\n", get_env_value("PWD=", con->envp));
+	printf("$OLDPWD : %s\n\n", get_env_value("OLDPWD=", con->envp));
+}

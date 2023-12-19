@@ -146,7 +146,7 @@ int	get_data_list_len(t_data *lst)
 	return (len);
 }
 
-void	init_container(t_container *con, t_token *line, char **envp)
+void	init_container(t_container *con, t_token *line)
 {
 	con->head = make_data_list(line);
 	con->cnt = get_data_list_len(con->head);
