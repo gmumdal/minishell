@@ -6,7 +6,7 @@
 /*   By: hyeongsh <hyeongsh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 16:50:33 by hyeongsh          #+#    #+#             */
-/*   Updated: 2023/12/19 16:40:34 by hyeongsh         ###   ########.fr       */
+/*   Updated: 2023/12/19 17:09:22 by hyeongsh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ void	ms_readline(char **envp, t_container *con)
 		add_history(line);
 		head = parsing(line, con->envp);
 		if (head == NULL)
-			error_print(errno);
+			continue ;
 		if (init_container(con, head) == 0)
 			continue ;
 		pipex(con);
