@@ -1,22 +1,44 @@
 #include "minishell.h"
 
-void	heredoc(t_data *info)
+int	heredoc(t_data *info, t_container *con, int type)
+{
+	int		tmpfile_fd;
+	int		status;
+	pid_t	pid;
+
+	ms_sigset(SIG_IGN, SIG_IGN);
+	pid = fork();
+	if (pid == -1)
+		error_print(errno);
+	if (pid == 0)
+	{
+		ms_sigset(sig_heredoc, SIG_IGN);
+		tmpfile_fd = open(info->infile, O_CREAT | O_WRONLY | O_TRUNC, 0644);
+		if (tmpfile_fd < 0)
+			perror_exit("open()", 1);
+		read_heredoc(info, con, tmpfile_fd, type);
+		exit (0);
+	}
+	wait(&status);
+	return (wait_heredoc(info, status));
+}
+
+void	read_heredoc(t_data *info, t_container *con, int tmpfile_fd, int type)
 {
 	char	*line;
-	int		tmpfile_fd;
 
-	info->infile = get_heredoc_tmpfile_name();
-	tmpfile_fd = open(info->infile, O_CREAT | O_WRONLY | O_TRUNC, 0644);
-	if (tmpfile_fd < 0)
-		perror_exit("open()", 1);
-	while (1)
+	while (42)
 	{
 		line = readline("> ");
 		if (!line)
-			break ;
+			return ;
+		if (!line[0])
+			continue ;
 		if (!ft_strncmp(info->delimeter, line, ft_strlen(info->delimeter))
 			&& ft_strlen(info->delimeter) == (ft_strlen(line)))
-			break ;
+			return ;
+		if (type == 4)
+			line = heredoc_expend(line, con->envp);
 		write(tmpfile_fd, line, ft_strlen(line));
 		write(tmpfile_fd, "\n", 1);
 		free(line);
@@ -25,9 +47,22 @@ void	heredoc(t_data *info)
 	close(tmpfile_fd);
 }
 
+int	wait_heredoc(t_data *info, int status)
+{
+	if (WEXITSTATUS(status) == 130)
+	{
+		unlink(info->infile);
+		write(1, "\n", 1);
+		ms_sigset(sig_newline, SIG_IGN);
+		return (0);
+	}
+	ms_sigset(sig_newline, SIG_IGN);
+	return (1);
+}
+
 char	*get_heredoc_tmpfile_name(void)
 {
-	int 	tmp_num;
+	int		tmp_num;
 	char	*tmp;
 
 	tmp_num = INT32_MIN;

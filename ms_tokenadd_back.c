@@ -6,7 +6,7 @@
 /*   By: hyeongsh <hyeongsh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/08 21:00:43 by hyeongsh          #+#    #+#             */
-/*   Updated: 2023/12/16 20:43:02 by hyeongsh         ###   ########.fr       */
+/*   Updated: 2023/12/19 14:56:20 by hyeongsh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 static int		ms_type_check(t_token *new);
 static t_token	*ms_tokenlast(t_token *token);
+static char		*rm_quote(char *data);
 
 int	ms_tokenadd_back(t_token **token, t_token *new)
 {
@@ -30,6 +31,8 @@ int	ms_tokenadd_back(t_token **token, t_token *new)
 	new->prev = last;
 	last->next = new;
 	new->type = ms_type_check(new);
+	if (ft_init(new->data, "\"\'") > -1)
+		new->data = rm_quote(new->data);
 	return (1);
 }
 
@@ -46,8 +49,10 @@ static int	ms_type_check(t_token *new)
 		return (2);
 	else if (tmp->type == -3)
 		return (3);
-	else if (tmp->type == -4)
+	else if (tmp->type == -4 && ft_init(new->data, "\"\'") == -1)
 		return (4);
+	else if (tmp->type == -4 && ft_init(new->data, "\"\'") > -1)
+		return (5);
 	else
 		return (0);
 }
@@ -59,4 +64,33 @@ static t_token	*ms_tokenlast(t_token *token)
 	while (token->next != NULL)
 		token = token->next;
 	return (token);
+}
+
+static char	*rm_quote(char *data)
+{
+	int		i;
+	int		j;
+	char	quote;
+	char	*toss;
+
+	quote = 0;
+	toss = (char *)ft_calloc(ft_strlen(data), sizeof(char));
+	if (toss == 0)
+		error_print(errno);
+	i = 0;
+	j = 0;
+	while (data[i] != 0)
+	{
+		if (quote == 0 && (data[i] == '\'' || data[i] == '\"'))
+			quote = data[i++];
+		if (quote != 0 && data[i] == quote)
+		{
+			quote = 0;
+			i++;
+			continue ;
+		}
+		toss[j++] = data[i++];
+	}
+	free(data);
+	return (toss);
 }

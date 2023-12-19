@@ -6,7 +6,7 @@
 /*   By: hyeongsh <hyeongsh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 22:25:31 by jongmlee          #+#    #+#             */
-/*   Updated: 2023/12/18 15:54:40 by hyeongsh         ###   ########.fr       */
+/*   Updated: 2023/12/19 15:24:15 by hyeongsh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	init_info(t_info *info, t_container *con)
 	}
 }
 
-int	wait_children(t_info *info, t_data *head)
+int	wait_children(t_info *info, t_container *con)
 {
 	int	i;
 	int	wstatus;
@@ -52,7 +52,9 @@ int	wait_children(t_info *info, t_data *head)
 				exit_code = WTERMSIG(wstatus);
 		}
 	}
-	delete_all_heredoc_tmpfile(head);
+	ms_sigset(sig_newline, SIG_IGN);
+	set_input_mode(&con->new_term);
+	delete_all_heredoc_tmpfile(con->head);
 	return (exit_code);
 }
 
@@ -65,14 +67,17 @@ void	child(t_info *info, t_container *con)
 	close(info->pipe_fds[info->cur][1]);
 	if (info->idx != info->cnt - 1)
 		open_pipe(info);
+	ms_sigset(SIG_IGN, SIG_IGN);
 	info->last_pid = fork();
 	if (info->last_pid == -1)
 	{
-		wait_children(info, con->head);
+		wait_children(info, con);
 		perror_exit("fork()", 1);
 	}
 	if (info->last_pid == 0)
 	{
+		reset_input_mode(&con->old_term);
+		ms_sigset(SIG_DFL, SIG_DFL);
 		open_file(info);
 		close_pipe(info);
 		redirect(info);
@@ -89,5 +94,5 @@ int	pipex(t_container *con)
 	while (++info.idx < info.cnt)
 		child(&info, con);
 	close_all_pipe(&info);
-	return (wait_children(&info, con->head));
+	return (wait_children(&info, con));
 }

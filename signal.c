@@ -1,32 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   termios.c                                          :+:      :+:    :+:   */
+/*   signal.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hyeongsh <hyeongsh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/18 20:37:31 by hyeongsh          #+#    #+#             */
-/*   Updated: 2023/12/19 13:37:38 by hyeongsh         ###   ########.fr       */
+/*   Created: 2023/12/19 13:36:41 by hyeongsh          #+#    #+#             */
+/*   Updated: 2023/12/19 16:18:07 by hyeongsh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	save_input_mode(struct termios *old_term)
+void	ms_sigset(void (*sigint_func)(int), void (*sigquit_func)(int))
 {
-	tcgetattr(STDIN_FILENO, old_term);
+	signal(SIGINT, (*sigint_func));
+	signal(SIGQUIT, (*sigquit_func));
 }
 
-void	set_input_mode(struct termios *new_term)
+void	sig_newline(int signum)
 {
-	tcgetattr(STDIN_FILENO, new_term);
-	new_term->c_lflag &= ~(ECHOCTL);
-	new_term->c_cc[VMIN] = 1;
-	new_term->c_cc[VTIME] = 0;
-	tcsetattr(STDIN_FILENO, TCSANOW, new_term);
+	(void)signum;
+	write(1, "\n", 1);
+	rl_on_new_line();
+	rl_replace_line("", 1);
+	rl_redisplay();
 }
 
-void	reset_input_mode(struct termios *old_term)
+void	sig_heredoc(int signum)
 {
-	tcsetattr(STDIN_FILENO, TCSANOW, old_term);
+	exit(128 + signum);
 }

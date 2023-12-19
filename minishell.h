@@ -6,7 +6,7 @@
 /*   By: hyeongsh <hyeongsh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 16:53:34 by hyeongsh          #+#    #+#             */
-/*   Updated: 2023/12/18 21:16:40 by hyeongsh         ###   ########.fr       */
+/*   Updated: 2023/12/19 16:59:19 by hyeongsh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,8 @@ typedef struct s_container
 	char			**envp;
 	char			*tmp_pwd;
 	int				cnt;
+	struct termios	old_term;
+	struct termios	new_term;
 }	t_container;
 
 typedef struct s_data
@@ -88,6 +90,11 @@ void	split_free(char **command);
 void	save_input_mode(struct termios *old_term);
 void	set_input_mode(struct termios *new_term);
 void	reset_input_mode(struct termios *old_term);
+
+/* signal.c */
+void	ms_sigset(void (*sigint_func)(int), void (*sigquit_func)(int));
+void	sig_newline(int signum);
+void	sig_heredoc(int signum);
 
 /* ms_split.c */
 int		ms_init(char c, char *s);
@@ -144,24 +151,30 @@ void	close_all_pipe(t_info *info);
 void	redirect(t_info *info);
 
 /* pipe */
-int		wait_children(t_info *info, t_data *head);
+int		wait_children(t_info *info, t_container *con);
 void	init_info(t_info *info, t_container *con);
 void	child(t_info *info, t_container *con);
 int		pipex(t_container *con);
 
 /* heredoc */
-void	heredoc(t_data *info);
+int		heredoc(t_data *info, t_container *con, int type);
 char	*get_heredoc_tmpfile_name(void);
 void	delete_all_heredoc_tmpfile(t_data *head);
+void	read_heredoc(t_data *info, t_container *con, int tmpfile_fd, int type);
+int		wait_heredoc(t_data *info, int status);
+
+/* heredoc_expend.c */
+char	*heredoc_expend(char *data, char **envp);
+
 
 /* data_list */
 void	init_data_node(t_data *node);
 int		get_cmd_arr_len(t_token *lst);
-t_data	*data_lstnew(t_token *line);
+t_data	*data_lstnew(t_token *line, t_container *con);
 t_data	*data_lstlast(t_data *lst);
-void	data_lstadd_back(t_data **lst, t_data *new);
-t_data	*make_data_list(t_token *line);
+int		data_lstadd_back(t_data **lst, t_data *new);
+t_data	*make_data_list(t_token *line, t_container *con);
 int		get_data_list_len(t_data *lst);
-void	init_container(t_container *con, t_token *line, char **envp);
+int		init_container(t_container *con, t_token *line);
 
 #endif
