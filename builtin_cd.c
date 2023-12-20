@@ -40,7 +40,7 @@ int	set_pwd_oldpwd(t_container *con)
 	tmp = getcwd(NULL, MAXSIZE);
 	if (tmp == NULL)
 	{
-		error_print(errno);
+		perror("getcwd()");
 		return (1);
 	}
 	free(con->pwd);
@@ -64,16 +64,15 @@ int	builtin_cd(char **cmds, t_container *con)
 		if (errno == ENOENT)
 			path = get_env_value("HOME=", con->envp);
 		else
-			error_print(errno);
-		return (1);
+		{
+			perror("getcwd()");
+			return (1);
+		}
 	}
 	free(tmp);
 	if (cmds[1] == NULL)
 		path = get_env_value("HOME=", con->envp);
 	if (chdir(path) == -1)
-	{
-		is_error = print_execute_error("cd", path, strerror(errno));
-		return (1);
-	}
+		return (print_execute_error("cd", path, strerror(errno)));
 	return (set_pwd_oldpwd(con));
 }
