@@ -22,6 +22,8 @@ void	execute_builtin(char **cmds, t_container *con)
 		builtin_exit(cmds);
 	else if (ft_strncmp(cmds[0], "export", 7) == 0)
 		builtin_export(cmds, con);
+	else if (ft_strncmp(cmds[0], "env", 4) == 0)
+		builtin_env(con->envp);
 }
 
 int	get_2d_arr_len(char	**s)

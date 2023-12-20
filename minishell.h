@@ -6,7 +6,7 @@
 /*   By: jongmlee <jongmlee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 16:53:34 by hyeongsh          #+#    #+#             */
-/*   Updated: 2023/12/20 19:06:41 by jongmlee         ###   ########.fr       */
+/*   Updated: 2023/12/20 19:35:43 by jongmlee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -199,6 +199,9 @@ void	builtin_exit(char **cmds);
 
 /* bulitin_export */
 void	builtin_export(char **cmds, t_container *con);
+
+/* builtin_env */
+void	builtin_env(char **s);
 
 /* main */
 void	ms_readline(t_container *con);

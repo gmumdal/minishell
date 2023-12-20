@@ -6,7 +6,7 @@
 /*   By: jongmlee <jongmlee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 22:27:54 by jongmlee          #+#    #+#             */
-/*   Updated: 2023/12/20 17:04:49 by jongmlee         ###   ########.fr       */
+/*   Updated: 2023/12/20 19:32:11 by jongmlee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ int	execute_cmd(t_info *info, t_container *con)
 	if (check_builtin(cmds[0]) == 0)
 	{
 		execute_builtin(cmds, con);
-		exit(0);
+		exit(exit_code);
 	}
 	env_path = get_env_path(info->envp);
 	if (env_path == NULL)
@@ -108,7 +108,8 @@ int	execute_cmd(t_info *info, t_container *con)
 	{
 		ft_putstr_fd(ft_strjoin("minishell: ", cmds[0]), 2);
 		ft_putstr_fd(CMD_NOT_FOUND_ERR, 2);
-		exit(127);
+		exit_code = 127;
+		exit(exit_code);
 	}
 	return (execve(valid_path, cmds, info->envp));
 }

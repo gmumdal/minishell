@@ -30,7 +30,10 @@ void	builtin_export(char **cmds, t_container *con)
 	char	**ret;
 
 	if (cmds[1] == NULL)
+	{
+		builtin_env(con->envp);
 		return ;
+	}
 	var_name = ft_substr(cmds[1], 0, ft_strchr(cmds[1], '=') - cmds[1]);
 	if (check_identifier(var_name) != 0)
 	{
