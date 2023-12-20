@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jongmlee <jongmlee@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hyeongsh <hyeongsh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 16:50:33 by hyeongsh          #+#    #+#             */
-/*   Updated: 2023/12/20 17:27:57 by jongmlee         ###   ########.fr       */
+/*   Updated: 2023/12/20 17:45:00 by hyeongsh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,10 @@ void	ms_readline(t_container *con)
 	t_token		*head;
 	char		*line;
 
+	line = 0;
 	while (42)
 	{
+		free(line);
 		line = readline("mish> \033[s");
 		if (!line)
 			break ;
@@ -63,7 +65,6 @@ void	ms_readline(t_container *con)
 		else
 			pipex(con);
 		ms_tokenclear(&head, free);
-		free(line);
 	}
 	printf("\033[u\033[1B\033[1Aexit\n");
 }
