@@ -6,7 +6,7 @@
 /*   By: jongmlee <jongmlee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 16:53:34 by hyeongsh          #+#    #+#             */
-/*   Updated: 2023/12/19 11:45:38 by jongmlee         ###   ########.fr       */
+/*   Updated: 2023/12/20 16:52:18 by jongmlee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,15 +155,20 @@ int		get_data_list_len(t_data *lst);
 void	init_container(t_container *con, t_token *line);
 
 /* error_execute */
-int	print_execute_error(char *cmd, char *path, char *error_msg);
+int		print_execute_error(char *cmd, char *path, char *error_msg);
 
 /* builtin_utils */
-int	check_builtin(char *s);
-int	execute_builtin(char **cmds, t_container *con);
+int		check_builtin(char *s);
+void	execute_builtin(char **cmds, t_container *con);
+int		get_2d_arr_len(char	**s);
 
 /* builtin_cd */
 char	*get_env_value(char *env, char **envp);
-int	builtin_cd(char **cmds, t_container *con);
+int		builtin_cd(char **cmds, t_container *con);
+
+/* builtin_unset */
+void	builtin_unset(char	**cmds, t_container *con);
+int		check_identifier(char *cmd);
 
 /* main */
 void	pre_init_container(t_container *con, char **envp);

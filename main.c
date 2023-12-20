@@ -6,7 +6,7 @@
 /*   By: jongmlee <jongmlee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 16:50:33 by hyeongsh          #+#    #+#             */
-/*   Updated: 2023/12/19 11:45:40 by jongmlee         ###   ########.fr       */
+/*   Updated: 2023/12/20 16:52:50 by jongmlee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,6 @@ int	main(int ac, char **av, char **envp)
 	con.envp = ms_2d_arr_dup(envp);
 	while (42)
 	{
-		print_pwd_oldpwd(&con);
 		line = readline("mish> ");
 		if (!line)
 			break ;
