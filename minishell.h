@@ -6,7 +6,7 @@
 /*   By: hyeongsh <hyeongsh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 16:53:34 by hyeongsh          #+#    #+#             */
-/*   Updated: 2023/12/19 16:59:19 by hyeongsh         ###   ########.fr       */
+/*   Updated: 2023/12/20 15:56:56 by hyeongsh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@
 # define CMD_NOT_FOUND_ERR ": command not found\n"
 # define ERROR 1
 
-struct sigaction	sig;
+int	exit_code;
 
 typedef struct s_container
 {
@@ -111,6 +111,7 @@ int		ms_tokenadd_back(t_token **token, t_token *new);
 /* side_utils.c */
 void	error_print(int flag);
 int		ft_init(char *s, char *data);
+char	*exit_expend(char *expend);
 
 /* ms_expend_edit.c */
 char	*expend_list(char *data, char **envp);
@@ -152,6 +153,7 @@ void	redirect(t_info *info);
 
 /* pipe */
 int		wait_children(t_info *info, t_container *con);
+int		check_exitcode(int wstatus);
 void	init_info(t_info *info, t_container *con);
 void	child(t_info *info, t_container *con);
 int		pipex(t_container *con);
@@ -166,7 +168,6 @@ int		wait_heredoc(t_data *info, int status);
 /* heredoc_expend.c */
 char	*heredoc_expend(char *data, char **envp);
 
-
 /* data_list */
 void	init_data_node(t_data *node);
 int		get_cmd_arr_len(t_token *lst);
@@ -176,5 +177,8 @@ int		data_lstadd_back(t_data **lst, t_data *new);
 t_data	*make_data_list(t_token *line, t_container *con);
 int		get_data_list_len(t_data *lst);
 int		init_container(t_container *con, t_token *line);
+
+/* bulitin_exit */
+void	bulitin_exit(void);
 
 #endif

@@ -17,7 +17,6 @@ void	set_pwd_and_oldpwd(t_container *con)
 	free(old_pwd);
 }
 
-
 void	builtin_cd(char **cmds, t_container *con)
 {
 	char	*path;

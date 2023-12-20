@@ -6,7 +6,7 @@
 /*   By: hyeongsh <hyeongsh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 21:33:16 by hyeongsh          #+#    #+#             */
-/*   Updated: 2023/12/16 22:27:15 by hyeongsh         ###   ########.fr       */
+/*   Updated: 2023/12/20 15:24:54 by hyeongsh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,4 +39,20 @@ int	ft_init(char *s, char *data)
 		i++;
 	}
 	return (-1);
+}
+
+char	*exit_expend(char *expend)
+{
+	char	*toss;
+	char	*itoa_exit;
+
+	itoa_exit = ft_itoa(exit_code);
+	if (itoa_exit == 0)
+		error_print(errno);
+	toss = ft_strjoin(itoa_exit, expend + 2);
+	if (toss == 0)
+		error_print(errno);
+	free(itoa_exit);
+	free(expend);
+	return (toss);
 }

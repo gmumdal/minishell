@@ -6,7 +6,7 @@
 /*   By: hyeongsh <hyeongsh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/16 16:18:05 by hyeongsh          #+#    #+#             */
-/*   Updated: 2023/12/19 17:41:32 by hyeongsh         ###   ########.fr       */
+/*   Updated: 2023/12/20 15:21:44 by hyeongsh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,8 @@ static char	*env_expend(char *expend, char **envp)
 
 	if (ft_strncmp(expend, "$", 2) == 0 || ft_strncmp(expend, "\"$\"", 4) == 0)
 		return (expend);
+	if (ft_strncmp(expend, "$?", 2) == 0)
+		return (exit_expend(expend));
 	tmp = ft_strjoin(&expend[1], "=");
 	if (tmp == 0)
 		error_print(errno);

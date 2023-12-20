@@ -6,7 +6,7 @@
 /*   By: hyeongsh <hyeongsh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 22:25:31 by jongmlee          #+#    #+#             */
-/*   Updated: 2023/12/19 15:24:15 by hyeongsh         ###   ########.fr       */
+/*   Updated: 2023/12/20 15:07:41 by hyeongsh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,16 +45,29 @@ int	wait_children(t_info *info, t_container *con)
 		if (result == -1)
 			break ;
 		if (result == info->last_pid)
-		{
-			if (WIFEXITED(wstatus) != 0)
-				exit_code = WEXITSTATUS(wstatus);
-			else if (WIFSIGNALED(wstatus) != 0)
-				exit_code = WTERMSIG(wstatus);
-		}
+			exit_code = check_exitcode(wstatus);
 	}
 	ms_sigset(sig_newline, SIG_IGN);
 	set_input_mode(&con->new_term);
 	delete_all_heredoc_tmpfile(con->head);
+	return (exit_code);
+}
+
+int	check_exitcode(int wstatus)
+{
+	int	exit_code;
+
+	exit_code = 0;
+	if (WIFEXITED(wstatus) != 0)
+		exit_code = WEXITSTATUS(wstatus);
+	else if (WIFSIGNALED(wstatus) != 0)
+	{
+		exit_code = WTERMSIG(wstatus);
+		if (exit_code == 3)
+			printf("Quit: %d\n", exit_code);
+		else
+			printf("\n");
+	}
 	return (exit_code);
 }
 

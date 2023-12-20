@@ -4,7 +4,8 @@ SRCS = main.c ms_parsing.c ms_split.c \
 	ms_tokenclear.c ms_expend_edit.c side_utils.c \
 	signal.c debug.c data_list.c \
 	ms_utils1.c heredoc.c heredoc_expend.c \
-	pipe.c pipe_utils.c pipe_parse.c pipe_exit.c 
+	pipe.c pipe_utils.c pipe_parse.c pipe_exit.c \
+	bulitin.c
 INCS = minishell.h
 LIBFT = -Ilibft -Llibft -lft
 READ = -lreadline

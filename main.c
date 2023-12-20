@@ -6,7 +6,7 @@
 /*   By: hyeongsh <hyeongsh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 16:50:33 by hyeongsh          #+#    #+#             */
-/*   Updated: 2023/12/19 17:35:09 by hyeongsh         ###   ########.fr       */
+/*   Updated: 2023/12/20 16:08:30 by hyeongsh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,14 +19,16 @@ int	main(int ac, char **av, char **envp)
 {
 	t_container		con;
 
-	(void) ac;
+	if (ac != 1)
+		return (0);
 	(void) av;
+	exit_code = 0;
 	ms_sigset(sig_newline, SIG_IGN);
 	save_input_mode(&con.old_term);
 	set_input_mode(&con.new_term);
 	ms_readline(envp, &con);
 	reset_input_mode(&con.old_term);
-	return (0);
+	return (exit_code);
 }
 
 void	ms_readline(char **envp, t_container *con)
@@ -37,7 +39,7 @@ void	ms_readline(char **envp, t_container *con)
 	con->envp = ms_2d_arr_dup(envp);
 	while (42)
 	{
-		line = readline("mish> ");
+		line = readline("mish> \033[s");
 		if (!line)
 			break ;
 		if (!line[0])
@@ -52,4 +54,5 @@ void	ms_readline(char **envp, t_container *con)
 		ms_tokenclear(&head, free);
 		free(line);
 	}
+	printf("\033[u\033[1B\033[1Aexit\n");
 }
