@@ -6,11 +6,13 @@
 /*   By: hyeongsh <hyeongsh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 16:50:33 by hyeongsh          #+#    #+#             */
-/*   Updated: 2023/12/20 19:44:26 by hyeongsh         ###   ########.fr       */
+/*   Updated: 2023/12/20 21:56:21 by hyeongsh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	ms_readline(t_container *con, char *line);
 
 void	pre_init_container(t_container *con, char **envp)
 {
@@ -35,18 +37,16 @@ int	main(int ac, char **av, char **envp)
 	save_input_mode(&con.old_term);
 	set_input_mode(&con.new_term);
 	pre_init_container(&con, envp);
-	ms_readline(&con);
+	ms_readline(&con, NULL);
 	printf("\033[u\033[1B\033[1Aexit\n");
 	reset_input_mode(&con.old_term);
 	return (exit_code);
 }
 
-void	ms_readline(t_container *con)
+void	ms_readline(t_container *con, char *line)
 {
 	t_token		*head;
-	char		*line;
 
-	line = 0;
 	while (42)
 	{
 		free(line);
@@ -57,14 +57,15 @@ void	ms_readline(t_container *con)
 			continue ;
 		add_history(line);
 		head = parsing(line, con->envp);
-		if (head == NULL)
+		if (head == NULL || check_token(head))
+		{
 			continue ;
+		}
 		if (init_container(con, head) == 0)
 			continue ;
 		if (con->cnt == 1 && check_builtin(con->head->cmd_arr[0]) == 0)
 			execute_builtin(con->head->cmd_arr, con, 0);
 		else
 			pipex(con);
-		ms_tokenclear(&head, free);
 	}
 }

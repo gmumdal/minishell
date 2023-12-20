@@ -6,7 +6,7 @@
 /*   By: hyeongsh <hyeongsh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/08 12:20:48 by hyeongsh          #+#    #+#             */
-/*   Updated: 2023/12/18 15:04:22 by hyeongsh         ###   ########.fr       */
+/*   Updated: 2023/12/20 21:53:47 by hyeongsh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ t_token	*parsing(char *line, char **envp)
 			error_print(errno);
 		if (tmp->type == 100)
 		{
-			ms_tokenclear(&head, free);
+			syntax_error_print(&tmp->data[ft_strlen(tmp->data) - 1], &head);
 			break ;
 		}
 	}

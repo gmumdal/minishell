@@ -6,7 +6,7 @@
 /*   By: hyeongsh <hyeongsh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 16:53:34 by hyeongsh          #+#    #+#             */
-/*   Updated: 2023/12/20 19:37:53 by hyeongsh         ###   ########.fr       */
+/*   Updated: 2023/12/20 21:56:15 by hyeongsh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,6 +112,8 @@ int		ms_tokenadd_back(t_token **token, t_token *new);
 void	error_print(int flag);
 int		ft_init(char *s, char *data);
 char	*exit_expend(char *expend);
+int		syntax_error_print(char *error_char, t_token **head);
+int		check_token(t_token	*head);
 
 /* ms_expend_edit.c */
 char	*expend_list(char *data, char **envp);
@@ -199,7 +201,7 @@ void	builtin_exit(char **cmds, int flag);
 void	builtin_echo(char **cmds);
 
 /* main */
-void	ms_readline(t_container *con);
+void	ms_readline(t_container *con, char *line);
 void	pre_init_container(t_container *con, char **envp);
 int		init_container(t_container *con, t_token *line);
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_tokennew.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jongmlee <jongmlee@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hyeongsh <hyeongsh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/08 17:28:00 by hyeongsh          #+#    #+#             */
-/*   Updated: 2023/12/20 17:25:48 by jongmlee         ###   ########.fr       */
+/*   Updated: 2023/12/20 21:48:21 by hyeongsh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,5 @@ static int	ms_typecheck(char *data)
 		return (-4);
 	else if (ft_strncmp("|", data, 2) == 0)
 		return (-5);
-	printf("syntax error: %s\n", data);
 	return (100);
 }
