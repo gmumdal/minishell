@@ -6,7 +6,7 @@
 /*   By: hyeongsh <hyeongsh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 16:53:34 by hyeongsh          #+#    #+#             */
-/*   Updated: 2023/12/20 15:56:56 by hyeongsh         ###   ########.fr       */
+/*   Updated: 2023/12/20 16:53:05 by hyeongsh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -178,7 +178,7 @@ t_data	*make_data_list(t_token *line, t_container *con);
 int		get_data_list_len(t_data *lst);
 int		init_container(t_container *con, t_token *line);
 
-/* bulitin_exit */
-void	bulitin_exit(void);
+/* bulitin */
+void	bulitin_exit(char **cmds, t_container *con);
 
 #endif
