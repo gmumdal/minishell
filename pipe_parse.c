@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe_parse.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jongmlee <jongmlee@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hyeongsh <hyeongsh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 22:27:54 by jongmlee          #+#    #+#             */
-/*   Updated: 2023/12/20 17:04:49 by jongmlee         ###   ########.fr       */
+/*   Updated: 2023/12/20 19:37:24 by hyeongsh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ int	execute_cmd(t_info *info, t_container *con)
 	cmds = info->data->cmd_arr;
 	if (check_builtin(cmds[0]) == 0)
 	{
-		execute_builtin(cmds, con);
+		execute_builtin(cmds, con, 1);
 		exit(0);
 	}
 	env_path = get_env_path(info->envp);

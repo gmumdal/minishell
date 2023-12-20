@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jongmlee <jongmlee@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hyeongsh <hyeongsh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 16:53:34 by hyeongsh          #+#    #+#             */
-/*   Updated: 2023/12/20 17:08:50 by jongmlee         ###   ########.fr       */
+/*   Updated: 2023/12/20 19:37:53 by hyeongsh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -183,7 +183,7 @@ int		print_execute_error(char *cmd, char *path, char *error_msg);
 
 /* builtin_utils */
 int		check_builtin(char *s);
-void	execute_builtin(char **cmds, t_container *con);
+void	execute_builtin(char **cmds, t_container *con, int flag);
 int		get_2d_arr_len(char	**s);
 
 /* builtin_cd */
@@ -194,8 +194,9 @@ int		builtin_cd(char **cmds, t_container *con);
 void	builtin_unset(char	**cmds, t_container *con);
 int		check_identifier(char *cmd);
 
-/* bulitin_exit */
-void	builtin_exit(char **cmds);
+/* bulitin */
+void	builtin_exit(char **cmds, int flag);
+void	builtin_echo(char **cmds);
 
 /* main */
 void	ms_readline(t_container *con);

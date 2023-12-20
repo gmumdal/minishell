@@ -7,7 +7,7 @@ SRCS = main.c ms_parsing.c ms_split.c \
 	builtin_utils.c builtin_cd.c builtin_unset.c \
 	error_execute.c \
 	signal.c heredoc_expend.c \
-	builtin_exit.c
+	builtin_exit.c builtin_echo.c
 INCS = minishell.h
 LIBFT = -Ilibft -Llibft -lft
 READ = -lreadline
