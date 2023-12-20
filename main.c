@@ -6,7 +6,7 @@
 /*   By: jongmlee <jongmlee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 16:50:33 by hyeongsh          #+#    #+#             */
-/*   Updated: 2023/12/20 17:27:57 by jongmlee         ###   ########.fr       */
+/*   Updated: 2023/12/20 18:43:16 by jongmlee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ void	ms_readline(t_container *con)
 		head = parsing(line, con->envp);
 		if (head == NULL)
 			continue ;
-		if (init_container(con, head) == NULL)
+		if (init_container(con, head) == 0)
 			continue ;
 		if (con->cnt == 1 && check_builtin(con->head->cmd_arr[0]) == 0)
 			execute_builtin(con->head->cmd_arr, con);

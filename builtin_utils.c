@@ -20,6 +20,8 @@ void	execute_builtin(char **cmds, t_container *con)
 		builtin_unset(cmds, con);
 	else if (ft_strncmp(cmds[0], "exit", 5) == 0)
 		builtin_exit(cmds);
+	else if (ft_strncmp(cmds[0], "export", 7) == 0)
+		builtin_export(cmds, con);
 }
 
 int	get_2d_arr_len(char	**s)

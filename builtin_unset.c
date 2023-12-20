@@ -5,10 +5,7 @@ int	check_identifier(char *cmd)
 	int	i;
 
 	if (ft_isdigit(cmd[0]) == 1 || cmd[0] == '\0')
-	{
-		printf("here\n");
 		return (1);
-	}
 	i = -1;
 	while (cmd[++i] != '\0')
 	{
@@ -40,7 +37,7 @@ void	builtin_unset(char **cmds, t_container *con)
 			free(con->envp[envp_idx++]);
 			continue ;
 		}
-		ret[ret_idx++] = con->envp[envp_idx++]; 
+		ret[ret_idx++] = con->envp[envp_idx++];
 	}
 	free(con->envp);
 	con->envp = ret;
