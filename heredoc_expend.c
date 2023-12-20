@@ -1,23 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ms_expend_edit.c                                   :+:      :+:    :+:   */
+/*   heredoc_expend.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hyeongsh <hyeongsh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/16 16:18:05 by hyeongsh          #+#    #+#             */
-/*   Updated: 2023/12/20 15:21:44 by hyeongsh         ###   ########.fr       */
+/*   Created: 2023/12/19 14:49:41 by hyeongsh          #+#    #+#             */
+/*   Updated: 2023/12/19 15:16:27 by hyeongsh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	make_expend(char *expend, char *data, int *i, int type);
-static int	quote_edit(char c, int *quote, int type);
-static char	*env_expend(char *expend, char **envp);
-static char	*join_expend(char **expend, int j);
+static int	here_make_expend(char *expend, char *data, int *i, int type);
+static int	here_quote_edit(char c, int *quote, int type);
+static char	*here_env_expend(char *expend, char **envp);
+static char	*here_join_expend(char **expend, int j);
 
-char	*expend_list(char *data, char **envp)
+char	*heredoc_expend(char *data, char **envp)
 {
 	char	**expend;
 	int		i;
@@ -33,15 +33,15 @@ char	*expend_list(char *data, char **envp)
 		expend[j] = (char *)ft_calloc(ft_strlen(data) + 1, sizeof(char));
 		if (expend[j] == 0)
 			error_print(errno);
-		if (make_expend(expend[j], data, &i, 0) == 1)
-			expend[j] = env_expend(expend[j], envp);
+		if (here_make_expend(expend[j], data, &i, 0) == 1)
+			expend[j] = here_env_expend(expend[j], envp);
 		j++;
 	}
 	free(data);
-	return (join_expend(expend, j));
+	return (here_join_expend(expend, j));
 }
 
-static int	make_expend(char *expend, char *data, int *i, int type)
+static int	here_make_expend(char *expend, char *data, int *i, int type)
 {
 	static int	quote;
 	int			j;
@@ -49,43 +49,35 @@ static int	make_expend(char *expend, char *data, int *i, int type)
 	j = 0;
 	while (data[*i])
 	{
-		if (quote == 0 && type == 0 && (data[*i] == '\'' || data[*i] == '\"')
-			&& (*i)++ > -1)
+		if (quote == 0 && type == 0 && (data[*i] == '\'' || data[*i] == '\"'))
 			quote = 1 * (data[*i - 1] == '\'') + 2 * (data[*i - 1] == '\"');
 		if ((quote == 0 || quote == 2) && data[*i] == '$' && j > 0)
 			break ;
 		if ((quote == 0 || quote == 2) && data[*i] == '$' && j == 0)
 			type = 1;
 		if (type == 0 && ((quote == 1 && data[*i] == '\'')
-				|| (quote == 2 && data[*i] == '\"')) && (*i)++ > -1)
-		{
+				|| (quote == 2 && data[*i] == '\"')))
 			quote = 0;
-			continue ;
-		}
 		if (type == 1 && j > 0 && ((data[*i] == '$' || data[*i] == ' '
 					|| data[*i] == 0 || data[*i] == '\"' || data[*i] == '\'')))
 			break ;
 		expend[j++] = data[(*i)++];
 	}
-	return (quote_edit(data[*i], &quote, type));
+	return (here_quote_edit(data[*i], &quote, type));
 }
 
-static int	quote_edit(char data, int *quote, int type)
+static int	here_quote_edit(char data, int *quote, int type)
 {
 	if (data == 0)
 		*quote = 0;
 	return (type);
 }
 
-static char	*env_expend(char *expend, char **envp)
+static char	*here_env_expend(char *expend, char **envp)
 {
 	char	*tmp;
 	int		len;
 
-	if (ft_strncmp(expend, "$", 2) == 0 || ft_strncmp(expend, "\"$\"", 4) == 0)
-		return (expend);
-	if (ft_strncmp(expend, "$?", 2) == 0)
-		return (exit_expend(expend));
 	tmp = ft_strjoin(&expend[1], "=");
 	if (tmp == 0)
 		error_print(errno);
@@ -102,7 +94,7 @@ static char	*env_expend(char *expend, char **envp)
 	return (expend);
 }
 
-static char	*join_expend(char **expend, int j)
+static char	*here_join_expend(char **expend, int j)
 {
 	char	*toss;
 	char	*tmp;

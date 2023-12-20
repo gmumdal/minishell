@@ -6,7 +6,7 @@
 /*   By: jongmlee <jongmlee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 22:27:54 by jongmlee          #+#    #+#             */
-/*   Updated: 2023/12/19 16:25:04 by jongmlee         ###   ########.fr       */
+/*   Updated: 2023/12/20 17:04:49 by jongmlee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,6 +99,7 @@ int	execute_cmd(t_info *info, t_container *con)
 	env_path = get_env_path(info->envp);
 	if (env_path == NULL)
 		env_path = ft_strdup(BASIC_PATH);
+	cmds = info->data->cmd_arr;
 	if (access(cmds[0], X_OK) == 0 && ft_strchr(cmds[0], '/') != 0)
 		valid_path = cmds[0];
 	else

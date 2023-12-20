@@ -6,7 +6,7 @@
 /*   By: jongmlee <jongmlee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 16:53:34 by hyeongsh          #+#    #+#             */
-/*   Updated: 2023/12/20 16:52:18 by jongmlee         ###   ########.fr       */
+/*   Updated: 2023/12/20 17:08:50 by jongmlee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@
 # define CMD_NOT_FOUND_ERR ": command not found\n"
 # define ERROR 1
 
-struct sigaction	sig;
+int	exit_code;
 
 typedef struct s_container
 {
@@ -47,6 +47,8 @@ typedef struct s_container
 	char			**envp;
 	char			*pwd;
 	int				cnt;
+	struct termios	old_term;
+	struct termios	new_term;
 }	t_container;
 
 typedef struct s_data
@@ -80,21 +82,38 @@ typedef struct s_token
 	int				type;
 }	t_token;
 
+/* parsing.c */
 t_token	*parsing(char *line, char **envp);
 void	split_free(char **command);
 
+/* termios.c */
+void	save_input_mode(struct termios *old_term);
+void	set_input_mode(struct termios *new_term);
+void	reset_input_mode(struct termios *old_term);
+
+/* signal.c */
+void	ms_sigset(void (*sigint_func)(int), void (*sigquit_func)(int));
+void	sig_newline(int signum);
+void	sig_heredoc(int signum);
+
+/* ms_split.c */
 int		ms_init(char c, char *s);
 int		ms_split_input(char *toss, char **cmd, char *oper);
 int		ms_split_first(char *toss, char **cmd, char *oper);
 int		ms_split_plus(char *toss, int *i, char **cmd);
 char	**ms_split(char *cmd);
 
+/* ms_token.c */
 t_token	*ms_tokennew(char *data, char **envp);
 void	ms_tokenclear(t_token **token, void (*del)(void *));
 int		ms_tokenadd_back(t_token **token, t_token *new);
 
+/* side_utils.c */
 void	error_print(int flag);
 int		ft_init(char *s, char *data);
+char	*exit_expend(char *expend);
+
+/* ms_expend_edit.c */
 char	*expend_list(char *data, char **envp);
 
 /* debug */
@@ -134,25 +153,30 @@ void	close_all_pipe(t_info *info);
 void	redirect(t_info *info);
 
 /* pipe */
-int		wait_children(t_info *info, t_data *head);
+int		wait_children(t_info *info, t_container *con);
+int		check_exitcode(int wstatus);
 void	init_info(t_info *info, t_container *con);
 void	child(t_info *info, t_container *con);
 int		pipex(t_container *con);
 
 /* heredoc */
-void	heredoc(t_data *info);
+int		heredoc(t_data *info, t_container *con, int type);
 char	*get_heredoc_tmpfile_name(void);
 void	delete_all_heredoc_tmpfile(t_data *head);
+void	read_heredoc(t_data *info, t_container *con, int tmpfile_fd, int type);
+int		wait_heredoc(t_data *info, int status);
+
+/* heredoc_expend.c */
+char	*heredoc_expend(char *data, char **envp);
 
 /* data_list */
 void	init_data_node(t_data *node);
 int		get_cmd_arr_len(t_token *lst);
-t_data	*data_lstnew(t_token *line);
+t_data	*data_lstnew(t_token *line, t_container *con);
 t_data	*data_lstlast(t_data *lst);
-void	data_lstadd_back(t_data **lst, t_data *new);
-t_data	*make_data_list(t_token *line);
+int		data_lstadd_back(t_data **lst, t_data *new);
+t_data	*make_data_list(t_token *line, t_container *con);
 int		get_data_list_len(t_data *lst);
-void	init_container(t_container *con, t_token *line);
 
 /* error_execute */
 int		print_execute_error(char *cmd, char *path, char *error_msg);
@@ -170,7 +194,12 @@ int		builtin_cd(char **cmds, t_container *con);
 void	builtin_unset(char	**cmds, t_container *con);
 int		check_identifier(char *cmd);
 
+/* bulitin_exit */
+void	builtin_exit(char **cmds);
+
 /* main */
+void	ms_readline(t_container *con);
 void	pre_init_container(t_container *con, char **envp);
+int		init_container(t_container *con, t_token *line);
 
 #endif

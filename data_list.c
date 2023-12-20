@@ -53,7 +53,7 @@ char	**make_cmd(t_token *list)
 	return (cmd);
 }
 
-void	check_type_and_dup_data(t_token *line, t_data *toss)
+int	check_type_and_dup_data(t_token *line, t_data *toss, t_container *con)
 {
 	while (line != NULL && line->type != -5)
 	{
@@ -65,16 +65,19 @@ void	check_type_and_dup_data(t_token *line, t_data *toss)
 		}
 		else if (line->type == 3)
 			toss->infile = ft_strdup(line->data);
-		else if (line->type == 4)
+		else if (line->type == 4 || line->type == 5)
 		{
 			toss->delimeter = ft_strdup(line->data);
-			heredoc(toss);
+			toss->infile = get_heredoc_tmpfile_name();
+			if (heredoc(toss, con, line->type) == 0)
+				return (0);
 		}
 		line = line->next;
 	}
+	return (1);
 }
 
-t_data	*data_lstnew(t_token *line)
+t_data	*data_lstnew(t_token *line, t_container *con)
 {
 	t_data	*toss;
 
@@ -85,7 +88,12 @@ t_data	*data_lstnew(t_token *line)
 		exit(1);
 	init_data_node(toss);
 	toss->cmd_arr = make_cmd(line);
-	check_type_and_dup_data(line, toss);
+	if (check_type_and_dup_data(line, toss, con) == 0)
+	{
+		split_free(toss->cmd_arr);
+		free(toss);
+		return (0);
+	}
 	return (toss);
 }
 
@@ -98,12 +106,12 @@ t_data	*data_lstlast(t_data *lst)
 	return (lst);
 }
 
-void	data_lstadd_back(t_data **lst, t_data *new)
+int	data_lstadd_back(t_data **lst, t_data *new)
 {
 	t_data	*cur;
-	
+
 	if (lst == NULL || new == NULL)
-		return ;
+		return (0);
 	if (*lst != NULL)
 	{
 		cur = data_lstlast(*lst);
@@ -111,20 +119,46 @@ void	data_lstadd_back(t_data **lst, t_data *new)
 	}
 	else
 		*lst = new;
+	return (1);
 }
 
-t_data	*make_data_list(t_token *line)
+void	data_lstclear(t_data **lst, void (*del)(void *))
+{
+	t_data	*cur;
+
+	if (lst == 0 || del == 0)
+		return ;
+	while (*lst != NULL)
+	{
+		cur = *lst;
+		*lst = (*lst)->next;
+		split_free(cur->cmd_arr);
+		free(cur->delimeter);
+		free(cur->infile);
+		free(cur->outfile);
+		free(cur);
+	}
+	*lst = 0;
+}
+
+t_data	*make_data_list(t_token *line, t_container *con)
 {
 	t_data	*head;
 
-	head = data_lstnew(line);
+	head = data_lstnew(line, con);
+	if (head == 0)
+		return (0);
 	while (line != NULL && line->type != -5)
 		line = line->next;
 	if (line != NULL)
 			line = line->next;
 	while (line != NULL)
 	{
-		data_lstadd_back(&head, data_lstnew(line));
+		if (data_lstadd_back(&head, data_lstnew(line, con)) == 0)
+		{
+			data_lstclear(&head, free);
+			return (0);
+		}
 		while (line != NULL && line->type != -5)
 			line = line->next;
 		if (line != NULL)
@@ -146,8 +180,11 @@ int	get_data_list_len(t_data *lst)
 	return (len);
 }
 
-void	init_container(t_container *con, t_token *line)
+int	init_container(t_container *con, t_token *line)
 {
-	con->head = make_data_list(line);
+	con->head = make_data_list(line, con);
+	if (con->head == 0)
+		return (0);
 	con->cnt = get_data_list_len(con->head);
+	return (1);
 }
