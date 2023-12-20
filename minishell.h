@@ -6,7 +6,7 @@
 /*   By: jongmlee <jongmlee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 16:53:34 by hyeongsh          #+#    #+#             */
-/*   Updated: 2023/12/20 19:35:43 by jongmlee         ###   ########.fr       */
+/*   Updated: 2023/12/20 20:18:57 by jongmlee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,6 +151,7 @@ void	close_pipe(t_info *info);
 void	open_file(t_info *info);
 void	close_all_pipe(t_info *info);
 void	redirect(t_info *info);
+int		check_valid_file(t_token *line);
 
 /* pipe */
 int		wait_children(t_info *info, t_container *con);

@@ -53,10 +53,33 @@ char	**make_cmd(t_token *list)
 	return (cmd);
 }
 
+int	check_valid_file(t_token *line)
+{
+	int	fd;
+
+	fd = 0;
+	if (line->type == 1 || line->type == 2)
+		fd = open(line->data, O_CREAT | O_WRONLY, 0644);
+	else if (line->type == 3)
+		fd = open(line->data, O_RDONLY);
+	if (fd == -1)
+	{
+		printf("minishell: %s: No such file or directory\n", line->data);
+		return (0);
+	}
+	close(fd);
+	return (1);
+}
+
 int	check_type_and_dup_data(t_token *line, t_data *toss, t_container *con)
 {
 	while (line != NULL && line->type != -5)
 	{
+		if (line->type == 1 || line->type == 2 || line->type == 3)
+		{
+			if (check_valid_file(line) == 0)
+				return (0);
+		}
 		if (line->type == 1 || line->type == 2)
 		{
 			toss->outfile = ft_strdup(line->data);

@@ -6,7 +6,7 @@
 /*   By: jongmlee <jongmlee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 16:50:33 by hyeongsh          #+#    #+#             */
-/*   Updated: 2023/12/20 18:43:16 by jongmlee         ###   ########.fr       */
+/*   Updated: 2023/12/20 20:51:05 by jongmlee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,10 @@ void	ms_readline(t_container *con)
 			continue ;
 		if (init_container(con, head) == 0)
 			continue ;
-		if (con->cnt == 1 && check_builtin(con->head->cmd_arr[0]) == 0)
+		//if (con->head->cmd_arr[0] == NULL)
+		//	printf("1\n");
+		if (con->cnt == 1 && con->head->cmd_arr[0] != NULL &&
+			(con->head->cmd_arr[0]) == 0)
 			execute_builtin(con->head->cmd_arr, con);
 		else
 			pipex(con);

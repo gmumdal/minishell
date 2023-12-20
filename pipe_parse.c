@@ -6,7 +6,7 @@
 /*   By: jongmlee <jongmlee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 22:27:54 by jongmlee          #+#    #+#             */
-/*   Updated: 2023/12/20 19:32:11 by jongmlee         ###   ########.fr       */
+/*   Updated: 2023/12/20 21:07:30 by jongmlee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,8 @@ int	execute_cmd(t_info *info, t_container *con)
 	char	*valid_path;
 
 	cmds = info->data->cmd_arr;
+	if (cmds[0] == NULL)
+		exit(0);
 	if (check_builtin(cmds[0]) == 0)
 	{
 		execute_builtin(cmds, con);

@@ -13,7 +13,7 @@ LIBFT = -Ilibft -Llibft -lft
 READ = -lreadline
 LIBFT_DIR = libft
 CC = cc
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -g
 
 all : $(NAME)
 
