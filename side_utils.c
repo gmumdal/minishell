@@ -6,23 +6,11 @@
 /*   By: hyeongsh <hyeongsh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 21:33:16 by hyeongsh          #+#    #+#             */
-/*   Updated: 2023/12/20 21:59:10 by hyeongsh         ###   ########.fr       */
+/*   Updated: 2023/12/21 11:37:23 by hyeongsh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-void	error_print(int flag)
-{
-	ft_putstr_fd("mish: ", 2);
-	if (flag == 2)
-		ft_putstr_fd("input: ", 2);
-	ft_putstr_fd(strerror(flag), 2);
-	ft_putstr_fd("\n", 2);
-	if (flag == 126)
-		exit(126);
-	exit(1);
-}
 
 int	ft_init(char *s, char *data)
 {
@@ -75,14 +63,4 @@ int	check_token(t_token	*head)
 		head = head->next;
 	}
 	return (0);
-}
-
-int	syntax_error_print(char *error_char, t_token **head)
-{
-	ft_putstr_fd("minishell: syntax error near unexpected token `", 2);
-	ft_putstr_fd(error_char, 2);
-	ft_putstr_fd("\'\n", 2);
-	exit_code = 258;
-	ms_tokenclear(head, free);
-	return (1);
 }
