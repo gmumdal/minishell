@@ -7,6 +7,7 @@ SRCS = main.c ms_parsing.c ms_split.c \
 	builtin_utils.c builtin_cd.c builtin_unset.c \
 	error_execute.c signal.c heredoc_expend.c \
 	builtin_exit.c builtin_export.c builtin_env.c builtin_echo.c
+OBJS = $(SRCS:.c=.o)
 INCS = minishell.h
 LIBFT = -Ilibft -Llibft -lft
 READ = -lreadline
@@ -16,12 +17,16 @@ CFLAGS = -Wall -Wextra -Werror
 
 all : $(NAME)
 
-$(NAME) : $(SRCS) $(INCS)
+$(NAME) : $(OBJS)
 	make -sC $(LIBFT_DIR) all
-	$(CC) $(CFLAGS) -o $@ $(SRCS) $(LIBFT) $(READ)
+	$(CC) $(CFLAGS) -o $@ $^ $(LIBFT) $(READ)
+
+%.o : %.c
+	$(CC) $(CFLAGS) -c $^ -Ilibft
 
 clean :
 	make -sC $(LIBFT_DIR) fclean
+	rm -rf $(OBJS)
 
 fclean : clean
 	rm -rf $(NAME)
