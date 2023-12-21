@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signal.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyeongsh <hyeongsh@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jongmlee <jongmlee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 13:36:41 by hyeongsh          #+#    #+#             */
-/*   Updated: 2023/12/20 15:10:55 by hyeongsh         ###   ########.fr       */
+/*   Updated: 2023/12/21 17:09:25 by jongmlee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,4 @@ void	sig_newline(int signum)
 	rl_on_new_line();
 	rl_replace_line("", 1);
 	rl_redisplay();
-}
-
-void	sig_heredoc(int signum)
-{
-	exit(128 + signum);
 }

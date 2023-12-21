@@ -6,7 +6,7 @@
 /*   By: jongmlee <jongmlee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 16:50:33 by hyeongsh          #+#    #+#             */
-/*   Updated: 2023/12/21 15:16:06 by jongmlee         ###   ########.fr       */
+/*   Updated: 2023/12/21 21:47:50 by jongmlee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,8 @@ int	main(int ac, char **av, char **envp)
 	set_input_mode(&con.new_term);
 	pre_init_container(&con, envp);
 	ms_readline(&con, NULL);
+	free(con.pwd);
+	free_2d_array(con.envp);
 	printf("\033[u\033[1B\033[1Aexit\n");
 	reset_input_mode(&con.old_term);
 	return (exit_code);
@@ -46,7 +48,7 @@ void	ms_readline(t_container *con, char *line)
 	while (42)
 	{
 		free(line);
-		line = readline("mish> \033[s");
+		line = readline("minishell> \033[s");
 		if (!line)
 			break ;
 		if (!line[0])
@@ -59,8 +61,15 @@ void	ms_readline(t_container *con, char *line)
 			continue ;
 		if (con->cnt == 1 && con->head->cmd_arr[0] != NULL
 			&& check_builtin(con->head->cmd_arr[0]) == 0)
-			exit_code = execute_builtin(con->head->cmd_arr, con, 0);
+			exit_code = execute_builtin_one_case(con);
 		else
 			pipex(con);
+		line_clear(&head, con);
 	}
+}
+
+void	line_clear(t_token **token, t_container *con)
+{
+	ms_tokenclear(token, free);
+	data_lstclear(&con->head, free);
 }

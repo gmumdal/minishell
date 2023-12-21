@@ -6,7 +6,7 @@
 /*   By: jongmlee <jongmlee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 22:25:31 by jongmlee          #+#    #+#             */
-/*   Updated: 2023/12/21 15:13:44 by jongmlee         ###   ########.fr       */
+/*   Updated: 2023/12/21 20:31:30 by jongmlee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,9 @@ int	wait_children(t_info *info, t_container *con)
 	int	i;
 	int	wstatus;
 	int	result;
+	int	error_num;
 
+	error_num = errno;
 	i = 0;
 	while (1)
 	{
@@ -48,7 +50,7 @@ int	wait_children(t_info *info, t_container *con)
 	ms_sigset(sig_newline, SIG_IGN);
 	set_input_mode(&con->new_term);
 	delete_all_heredoc_tmpfile(con->head);
-	return (exit_code);
+	return (error_num);
 }
 
 int	check_exitcode(int wstatus)
@@ -81,10 +83,7 @@ void	child(t_info *info, t_container *con)
 	ms_sigset(SIG_IGN, SIG_IGN);
 	info->last_pid = fork();
 	if (info->last_pid == -1)
-	{
-		wait_children(info, con);
-		error_print(errno);
-	}
+		error_print(wait_children(info, con));
 	if (info->last_pid == 0)
 	{
 		reset_input_mode(&con->old_term);

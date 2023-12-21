@@ -6,7 +6,7 @@
 /*   By: jongmlee <jongmlee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/08 17:28:00 by hyeongsh          #+#    #+#             */
-/*   Updated: 2023/12/21 14:30:17 by jongmlee         ###   ########.fr       */
+/*   Updated: 2023/12/21 20:54:27 by jongmlee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,14 @@ t_token	*ms_tokennew(char *data, char **envp)
 
 	if (ft_init(data, "$") > -1)
 		data = expend_list(data, envp);
+	if (data == NULL)
+		return (NULL);
 	toss = (t_token *)ft_calloc(1, sizeof(t_token));
 	toss->next = NULL;
 	toss->prev = NULL;
 	toss->data = data;
-	if (data != 0 && ft_init(data, "|<>&;\\") > -1)
+	if (data != 0 && ft_init(data, "|<>&;\\") > -1
+		&& ft_init(data, "\'\"") == -1)
 		toss->type = ms_typecheck(data);
 	else
 		toss->type = 0;

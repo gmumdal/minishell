@@ -6,7 +6,7 @@
 /*   By: jongmlee <jongmlee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 22:27:54 by jongmlee          #+#    #+#             */
-/*   Updated: 2023/12/21 15:06:55 by jongmlee         ###   ########.fr       */
+/*   Updated: 2023/12/21 21:03:33 by jongmlee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ char	*get_valid_path(char **cmds, char *env_path)
 		cmd_path = make_cmd_path(paths[i], cmds[0]);
 		if (cmd_path == NULL)
 			exit(1);
-		if (access(cmd_path, X_OK) == 0)
+		if (access(cmd_path, F_OK) == 0)
 		{
 			free_2d_array(paths);
 			return (cmd_path);
@@ -95,11 +95,13 @@ int	execute_cmd(t_info *info, t_container *con)
 	if (env_path == NULL)
 		env_path = ft_strdup(BASIC_PATH);
 	cmds = info->data->cmd_arr;
-	if (access(cmds[0], X_OK) == 0 && ft_strchr(cmds[0], '/') != 0)
+	if (access(cmds[0], F_OK) == 0 && ft_strchr(cmds[0], '/') != 0)
 		valid_path = cmds[0];
 	else
 		valid_path = get_valid_path(cmds, env_path);
 	if (valid_path == NULL)
 		print_command_error(cmds[0]);
-	return (execve(valid_path, cmds, info->envp));
+	if (execve(valid_path, cmds, info->envp) == -1)
+		print_execve_error(cmds[0]);
+	return (0);
 }

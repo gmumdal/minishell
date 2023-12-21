@@ -5,15 +5,14 @@ SRCS = main.c ms_parsing.c ms_split.c \
 	debug.c data_list.c ms_utils1.c \
 	pipe.c pipe_utils.c pipe_parse.c heredoc.c \
 	builtin_utils.c builtin_cd.c builtin_unset.c \
-	error_execute.c \
-	signal.c heredoc_expend.c \
+	error_execute.c signal.c heredoc_expend.c \
 	builtin_exit.c builtin_export.c builtin_env.c builtin_echo.c
 INCS = minishell.h
 LIBFT = -Ilibft -Llibft -lft
 READ = -lreadline
 LIBFT_DIR = libft
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -g
+CFLAGS = -Wall -Wextra -Werror
 
 all : $(NAME)
 

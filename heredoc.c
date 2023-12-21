@@ -12,7 +12,7 @@ int	heredoc(t_data *info, t_container *con, int type)
 		error_print(errno);
 	if (pid == 0)
 	{
-		ms_sigset(sig_heredoc, SIG_IGN);
+		ms_sigset(SIG_DFL, SIG_IGN);
 		tmpfile_fd = open(info->infile, O_CREAT | O_WRONLY | O_TRUNC, 0644);
 		if (tmpfile_fd < 0)
 			error_print(errno);
@@ -50,11 +50,12 @@ void	read_heredoc(t_data *info, t_container *con, int tmpfile_fd, int type)
 
 int	wait_heredoc(t_data *info, int status)
 {
-	if (WEXITSTATUS(status) == 130)
+	if (WIFSIGNALED(status) != 0)
 	{
 		unlink(info->infile);
 		write(1, "\n", 1);
 		ms_sigset(sig_newline, SIG_IGN);
+		exit_code = 1;
 		return (0);
 	}
 	ms_sigset(sig_newline, SIG_IGN);

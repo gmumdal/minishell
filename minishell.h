@@ -6,7 +6,7 @@
 /*   By: jongmlee <jongmlee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 16:53:34 by hyeongsh          #+#    #+#             */
-/*   Updated: 2023/12/21 15:07:11 by jongmlee         ###   ########.fr       */
+/*   Updated: 2023/12/21 21:22:01 by jongmlee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,6 @@ void	reset_input_mode(struct termios *old_term);
 /* signal.c */
 void	ms_sigset(void (*sigint_func)(int), void (*sigquit_func)(int));
 void	sig_newline(int signum);
-void	sig_heredoc(int signum);
 
 /* ms_split.c */
 int		ms_init(char c, char *s);
@@ -118,6 +117,7 @@ int		check_token(t_token	*head);
 char	*expend_list(char *data, char **envp);
 
 /* debug */
+void	print_arr(char *s);
 void	print_2d_arr(char **s);
 void	print_3d_arr(char ***s);
 void	print_node(t_token *list);
@@ -148,7 +148,7 @@ void	close_pipe(t_info *info);
 void	open_file(t_info *info);
 void	close_all_pipe(t_info *info);
 void	redirect(t_info *info);
-int		check_valid_file(t_token *line);
+void	check_valid_file(t_token *line, t_data *toss, int *flag);
 
 /* pipe */
 int		wait_children(t_info *info, t_container *con);
@@ -173,6 +173,7 @@ int		get_cmd_arr_len(t_token *lst);
 t_data	*data_lstnew(t_token *line, t_container *con);
 t_data	*data_lstlast(t_data *lst);
 int		data_lstadd_back(t_data **lst, t_data *new);
+void	data_lstclear(t_data **lst, void (*del)(void *));
 t_data	*make_data_list(t_token *line, t_container *con);
 int		get_data_list_len(t_data *lst);
 
@@ -180,11 +181,14 @@ int		get_data_list_len(t_data *lst);
 int		print_execute_error(char *cmd, char *path, char *error_msg);
 int		print_syntax_error(char *error_char, t_token **head);
 void	print_command_error(char *cmd);
+void	print_file_error(char *file);
+void	print_execve_error(char *cmd);
 
 /* builtin_utils */
 int		check_builtin(char *s);
 int		execute_builtin(char **cmds, t_container *con, int flag);
 int		get_2d_arr_len(char	**s);
+int		execute_builtin_one_case(t_container *con);
 
 /* builtin_cd */
 char	*get_env_value(char *env, char **envp);
@@ -193,6 +197,7 @@ int		builtin_cd(char **cmds, t_container *con);
 /* builtin_unset */
 int		builtin_unset(char	**cmds, t_container *con);
 int		check_identifier(char *cmd);
+char	**sub_env(t_container *con, char *cmd);
 
 /* bulitin */
 int		builtin_exit(char **cmds, int flag);
@@ -208,5 +213,6 @@ int		builtin_env(char **s);
 void	ms_readline(t_container *con, char *line);
 void	pre_init_container(t_container *con, char **envp);
 int		init_container(t_container *con, t_token *line);
+void	line_clear(t_token **token, t_container *con);
 
 #endif

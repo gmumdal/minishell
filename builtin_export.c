@@ -28,22 +28,27 @@ int	builtin_export(char **cmds, t_container *con)
 {
 	char	*var_name;
 	char	**ret;
+	int		i;
 
+	i = 0;
 	if (cmds[1] == NULL)
 	{
 		builtin_env(con->envp);
 		return (0);
 	}
-	var_name = ft_substr(cmds[1], 0, ft_strchr(cmds[1], '=') - cmds[1]);
-	if (check_identifier(var_name) != 0)
+	while (cmds[++i] != NULL)
 	{
+		var_name = ft_substr(cmds[i], 0, ft_strchr(cmds[i], '=') - cmds[i]);
+		if (check_identifier(var_name) != 0)
+		{
+			free(var_name);
+			return (print_execute_error("export", cmds[i],
+				"not a valid identifier"));
+		}
+		ret = add_env(var_name, cmds[i], con);
 		free(var_name);
-		print_execute_error("export", cmds[1], "not a valid identifier");
-		return (1);
+		free(con->envp);
+		con->envp = ret;
 	}
-	ret = add_env(var_name, cmds[1], con);
-	free(var_name);
-	free(con->envp);
-	con->envp = ret;
 	return (0);
 }

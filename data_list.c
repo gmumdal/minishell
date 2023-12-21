@@ -51,41 +51,41 @@ char	**make_cmd(t_token *list)
 	return (cmd);
 }
 
-int	check_valid_file(t_token *line)
+void	check_valid_file(t_token *line, t_data *toss, int *flag)
 {
 	int	fd;
 
 	fd = 0;
-	if (line->type == 1 || line->type == 2)
-		fd = open(line->data, O_CREAT | O_WRONLY, 0644);
-	else if (line->type == 3)
-		fd = open(line->data, O_RDONLY);
-	if (fd == -1)
+	if (*flag == 0 && (line->type == 1 || line->type == 2))
 	{
-		printf("minishell: %s: No such file or directory\n", line->data);
-		return (0);
+		fd = open(line->data, O_CREAT | O_WRONLY, 0644);
+		free(toss->outfile);
+		toss->outfile = ft_strdup(line->data);
+		if (fd == -1)
+			*flag = 1;
+		if (line->type == 2)
+			toss->is_append = 1;
+	}
+	else if (line->type == 3 && *flag == 0)
+	{
+		fd = open(line->data, O_RDONLY);
+		free(toss->infile);
+		toss->infile = ft_strdup(line->data);
+		if (fd == -1)
+			*flag = 1;
 	}
 	close(fd);
-	return (1);
 }
 
 int	check_type_and_dup_data(t_token *line, t_data *toss, t_container *con)
 {
+	int	flag;
+
+	flag = 0;
 	while (line != NULL && line->type != -5)
 	{
 		if (line->type == 1 || line->type == 2 || line->type == 3)
-		{
-			if (check_valid_file(line) == 0)
-				return (0);
-		}
-		if (line->type == 1 || line->type == 2)
-		{
-			toss->outfile = ft_strdup(line->data);
-			if (line->type == 2)
-				toss->is_append = 1;
-		}
-		else if (line->type == 3)
-			toss->infile = ft_strdup(line->data);
+			check_valid_file(line, toss, &flag);
 		else if (line->type == 4 || line->type == 5)
 		{
 			toss->delimeter = ft_strdup(line->data);
@@ -110,6 +110,9 @@ t_data	*data_lstnew(t_token *line, t_container *con)
 	if (check_type_and_dup_data(line, toss, con) == 0)
 	{
 		free_2d_array(toss->cmd_arr);
+		free(toss->infile);
+		free(toss->outfile);
+		free(toss->delimeter);
 		free(toss);
 		return (0);
 	}
@@ -203,7 +206,10 @@ int	init_container(t_container *con, t_token *line)
 {
 	con->head = make_data_list(line, con);
 	if (con->head == 0)
+	{
+		ms_tokenclear(&line, free);
 		return (0);
+	}
 	con->cnt = get_data_list_len(con->head);
 	return (1);
 }

@@ -6,7 +6,7 @@
 /*   By: jongmlee <jongmlee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 18:31:23 by hyeongsh          #+#    #+#             */
-/*   Updated: 2023/12/21 14:56:13 by jongmlee         ###   ########.fr       */
+/*   Updated: 2023/12/21 20:29:50 by jongmlee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,12 +63,12 @@ static void	echo_print(int print_flag, int option_flag, char **cmds, int i)
 		if (echo_option_check(cmds[i]) == 0)
 			print_flag = 1;
 		if (print_flag == 1)
-			printf("%s", cmds[i]);
+			ft_putstr_fd(cmds[i], 1);
 		if (cmds[i + 1] == 0 && option_flag == 0)
-			printf("\n");
+			ft_putstr_fd("\n", 1);
 		else if (cmds[i + 1] != 0
 			&& (echo_option_check(cmds[i]) == 0 || print_flag == 1))
-			printf(" ");
+			ft_putstr_fd(" ", 1);
 		i++;
 	}
 }

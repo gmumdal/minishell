@@ -6,7 +6,7 @@
 /*   By: jongmlee <jongmlee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 14:49:41 by hyeongsh          #+#    #+#             */
-/*   Updated: 2023/12/21 14:41:56 by jongmlee         ###   ########.fr       */
+/*   Updated: 2023/12/21 16:52:16 by jongmlee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,8 +97,6 @@ static char	*here_join_expend(char **expend, int j)
 		toss = ft_strdup(expend[0]);
 	else
 		toss = ft_strdup("");
-	if (toss == 0)
-		error_print(errno);
 	while (i + 1 < j)
 	{
 		if (expend[i + 1] != 0)

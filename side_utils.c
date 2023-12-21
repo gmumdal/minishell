@@ -6,7 +6,7 @@
 /*   By: jongmlee <jongmlee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 21:33:16 by hyeongsh          #+#    #+#             */
-/*   Updated: 2023/12/21 15:05:41 by jongmlee         ###   ########.fr       */
+/*   Updated: 2023/12/21 15:57:09 by jongmlee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,20 +43,23 @@ char	*exit_expend(char *expend)
 
 int	check_token(t_token	*head)
 {
-	while (head)
+	t_token	*tmp;
+
+	tmp = head;
+	while (tmp)
 	{
-		if (head->type < 0 && head->type > -5 && head->next == NULL)
+		if (tmp->type < 0 && tmp->type > -5 && tmp->next == NULL)
 			return (print_syntax_error("newline", &head));
-		else if (head->type < 0 && head->type > -5 && head->next != NULL
-			&& head->next->type < 0 && head->next->type > -5)
-			return (print_syntax_error(head->data, &head));
-		else if (head->type == -5 && (head->next == NULL
-				|| (head->next != NULL && head->next->type == -5)))
+		else if (tmp->type < 0 && tmp->type > -5 && tmp->next != NULL
+			&& tmp->next->type < 0 && tmp->next->type > -5)
+			return (print_syntax_error(tmp->data, &head));
+		else if (tmp->type == -5 && (tmp->next == NULL
+				|| (tmp->next != NULL && tmp->next->type == -5)))
 			return (print_syntax_error("|", &head));
-		else if (head->type == -5 && (head->prev == NULL
-				|| (head->prev != NULL && head->prev->type < 0)))
+		else if (tmp->type == -5 && (tmp->prev == NULL
+				|| (tmp->prev != NULL && tmp->prev->type < 0)))
 			return (print_syntax_error("|", &head));
-		head = head->next;
+		tmp = tmp->next;
 	}
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: jongmlee <jongmlee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 15:55:45 by hyeongsh          #+#    #+#             */
-/*   Updated: 2023/12/21 14:57:24 by jongmlee         ###   ########.fr       */
+/*   Updated: 2023/12/21 17:51:27 by jongmlee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,11 +45,12 @@ static int	exit_error_check(char **cmds, int i)
 	}
 	while (cmds[1][j])
 	{
-		if (ft_isdigit(cmds[1][j++]) == 0)
+		if (ft_isdigit(cmds[1][j]) == 0 && cmds[1][j] != '+' && cmds[1][j] != '-')
 		{
 			print_execute_error("exit", cmds[1], "numeric argument required");
 			exit(255);
 		}
+		j++;
 	}
 	if (i > 2)
 	{

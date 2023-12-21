@@ -6,7 +6,7 @@
 /*   By: jongmlee <jongmlee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/08 12:20:48 by hyeongsh          #+#    #+#             */
-/*   Updated: 2023/12/21 15:05:30 by jongmlee         ###   ########.fr       */
+/*   Updated: 2023/12/21 20:54:01 by jongmlee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@ t_token	*parsing(char *line, char **envp)
 	while (command[i])
 	{
 		tmp = ms_tokennew(ft_strdup(command[i++]), envp);
+		if (tmp == NULL)
+			continue ;
 		ms_tokenadd_back(&head, tmp);
 		if (tmp->type == 100)
 		{

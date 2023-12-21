@@ -6,7 +6,7 @@
 /*   By: jongmlee <jongmlee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 22:28:19 by jongmlee          #+#    #+#             */
-/*   Updated: 2023/12/21 14:50:14 by jongmlee         ###   ########.fr       */
+/*   Updated: 2023/12/21 20:04:37 by jongmlee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void	open_file(t_info *info)
 	{
 		info->infile_fd = open(info->data->infile, O_RDONLY);
 		if (info->infile_fd == -1)
-			error_print(errno);
+			print_file_error(info->data->infile);
 	}
 	if (info->data->outfile != NULL)
 	{

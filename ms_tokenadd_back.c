@@ -6,7 +6,7 @@
 /*   By: jongmlee <jongmlee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/08 21:00:43 by hyeongsh          #+#    #+#             */
-/*   Updated: 2023/12/21 14:31:31 by jongmlee         ###   ########.fr       */
+/*   Updated: 2023/12/21 17:31:51 by jongmlee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,14 +23,14 @@ int	ms_tokenadd_back(t_token **token, t_token *new)
 	if (token == 0 || new == 0)
 		return (0);
 	if (*token == 0)
-	{
 		*token = new;
-		return (1);
+	else
+	{
+		last = ms_tokenlast(*token);
+		new->prev = last;
+		last->next = new;
+		new->type = ms_type_check(new);
 	}
-	last = ms_tokenlast(*token);
-	new->prev = last;
-	last->next = new;
-	new->type = ms_type_check(new);
 	if (ft_init(new->data, "\"\'") > -1)
 		new->data = rm_quote(new->data);
 	return (1);

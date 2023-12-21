@@ -1,5 +1,13 @@
 #include "minishell.h"
 
+void	print_arr(char *s)
+{
+	if (s == NULL)
+		printf("널인디용\n");
+	printf("\n====print_arr====\n");
+		printf("s -> %s\n", s);
+}
+
 void	print_2d_arr(char **s)
 {
 	int	i;
@@ -39,8 +47,12 @@ void	print_3d_arr(char ***s)
 void	print_node(t_token *list)
 {
 	printf("\n====print_node====\n");
-	printf("list->data -> %s\n", list->data);
-	printf("list->type -> %d\n\n", list->type);
+	while (list != NULL)
+	{
+		printf("list->data -> %s\n", list->data);
+		printf("list->type -> %d\n\n", list->type);
+		list = list->next;
+	}
 }
 
 void	print_data_node(t_data *data)
