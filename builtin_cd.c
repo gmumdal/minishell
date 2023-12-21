@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   builtin_cd.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hyeongsh <hyeongsh@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/12/21 22:27:08 by hyeongsh          #+#    #+#             */
+/*   Updated: 2023/12/21 22:27:14 by hyeongsh         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 void	replace_env_value(char *dst_env, char *src_env, t_container *con)
@@ -40,7 +52,7 @@ int	set_pwd_oldpwd(t_container *con)
 	tmp = getcwd(NULL, MAXSIZE);
 	if (tmp == NULL)
 	{
-			error_print(errno);
+		error_print(errno);
 		return (1);
 	}
 	free(con->pwd);

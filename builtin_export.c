@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   builtin_export.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hyeongsh <hyeongsh@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/12/21 22:31:43 by hyeongsh          #+#    #+#             */
+/*   Updated: 2023/12/21 22:32:50 by hyeongsh         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 char	**add_env(char *var_name, char *var, t_container *con)
@@ -43,7 +55,7 @@ int	builtin_export(char **cmds, t_container *con)
 		{
 			free(var_name);
 			return (print_execute_error("export", cmds[i],
-				"not a valid identifier"));
+					"not a valid identifier"));
 		}
 		ret = add_env(var_name, cmds[i], con);
 		free(var_name);

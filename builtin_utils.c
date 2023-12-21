@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   builtin_utils.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hyeongsh <hyeongsh@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/12/21 22:27:45 by hyeongsh          #+#    #+#             */
+/*   Updated: 2023/12/21 22:32:37 by hyeongsh         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 int	check_builtin(char *s)
@@ -38,7 +50,7 @@ int	execute_builtin_one_case(t_container *con)
 	int	out_fd;
 	int	stdin;
 	int	stdout;
-	
+
 	in_fd = 2147483647;
 	out_fd = 2147483646;
 	stdin = dup(STDIN_FILENO);

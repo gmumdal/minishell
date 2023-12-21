@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   builtin_unset.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hyeongsh <hyeongsh@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/12/21 22:27:38 by hyeongsh          #+#    #+#             */
+/*   Updated: 2023/12/21 22:27:39 by hyeongsh         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 int	check_identifier(char *cmd)
@@ -27,7 +39,7 @@ int	builtin_unset(char **cmds, t_container *con)
 	{
 		if (check_identifier(cmds[i]) != 0)
 			return (print_execute_error("unset", cmds[i],
-				"not a valid identifier"));
+					"not a valid identifier"));
 		con->envp = sub_env(con, cmds[i]);
 	}
 	return (0);
@@ -38,7 +50,7 @@ char	**sub_env(t_container *con, char *cmd)
 	char	**ret;
 	int		envp_idx;
 	int		ret_idx;
-	
+
 	ret = (char **)ft_calloc(sizeof(char *), get_2d_arr_len(con->envp) + 1);
 	envp_idx = 0;
 	ret_idx = 0;

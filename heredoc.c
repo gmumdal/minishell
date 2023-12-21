@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   heredoc.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hyeongsh <hyeongsh@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/12/21 22:28:25 by hyeongsh          #+#    #+#             */
+/*   Updated: 2023/12/21 22:29:22 by hyeongsh         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 int	heredoc(t_data *info, t_container *con, int type)
@@ -17,7 +29,7 @@ int	heredoc(t_data *info, t_container *con, int type)
 		if (tmpfile_fd < 0)
 			error_print(errno);
 		read_heredoc(info, con, tmpfile_fd, type);
- 		exit(0);
+		exit(0);
 	}
 	wait(&status);
 	exit_code = WEXITSTATUS(status);
