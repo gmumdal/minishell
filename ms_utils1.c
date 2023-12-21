@@ -9,15 +9,11 @@ char	**ms_2d_arr_dup(char **s)
 	len = 0;
 	while (s[len] != NULL)
 		len++;
-	result = (char **)malloc((len + 1) * sizeof(char *));
-	if (result == NULL)
-		exit(1); // TODO: error handling
+	result = (char **)ft_calloc((len + 1), sizeof(char *));
 	i = 0;
 	while (i < len)
 	{
 		result[i] = ft_strdup(s[i]);
-		if (result[i] == NULL)
-			exit(1); // TODO: error handling
 		i++;
 	}
 	result[i] = NULL;

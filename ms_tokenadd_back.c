@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_tokenadd_back.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyeongsh <hyeongsh@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jongmlee <jongmlee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/08 21:00:43 by hyeongsh          #+#    #+#             */
-/*   Updated: 2023/12/19 17:08:11 by hyeongsh         ###   ########.fr       */
+/*   Updated: 2023/12/21 14:31:31 by jongmlee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,9 +74,7 @@ static char	*rm_quote(char *data)
 	char	*toss;
 
 	quote = 0;
-	toss = (char *)ft_calloc(ft_strlen(data), sizeof(char));
-	if (toss == 0)
-		error_print(errno);
+	toss = (char *)ft_calloc(ft_strlen(data) + 1, sizeof(char));
 	i = 0;
 	j = 0;
 	while (data[i] != 0)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_expend_edit.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyeongsh <hyeongsh@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jongmlee <jongmlee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/16 16:18:05 by hyeongsh          #+#    #+#             */
-/*   Updated: 2023/12/20 15:21:44 by hyeongsh         ###   ########.fr       */
+/*   Updated: 2023/12/21 15:03:11 by jongmlee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,6 +127,6 @@ static char	*join_expend(char **expend, int j)
 		toss = tmp;
 		i++;
 	}
-	split_free(expend);
+	free_2d_array(expend);
 	return (toss);
 }

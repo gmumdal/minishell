@@ -16,7 +16,7 @@ int	check_identifier(char *cmd)
 	return (0);
 }
 
-void	builtin_unset(char **cmds, t_container *con)
+int	builtin_unset(char **cmds, t_container *con)
 {
 	int		envp_idx;
 	int		ret_idx;
@@ -25,7 +25,7 @@ void	builtin_unset(char **cmds, t_container *con)
 	if (check_identifier(cmds[1]) != 0)
 	{
 		print_execute_error("unset", cmds[1], "not a valid identifier");
-		return ;
+		return (1);
 	}
 	ret = (char **)ft_calloc(sizeof(char *), get_2d_arr_len(con->envp));
 	envp_idx = 0;
@@ -41,4 +41,5 @@ void	builtin_unset(char **cmds, t_container *con)
 	}
 	free(con->envp);
 	con->envp = ret;
+	return (0);
 }

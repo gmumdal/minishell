@@ -39,9 +39,7 @@ char	**make_cmd(t_token *list)
 			len++;
 		tmp = tmp->next;
 	}
-	cmd = (char **)malloc((len + 1) * sizeof(char *));
-	if (cmd == NULL)
-		exit(1); // TODO: error handling
+	cmd = (char **)ft_calloc((len + 1), sizeof(char *));
 	i = 0;
 	while (i < len)
 	{
@@ -106,14 +104,12 @@ t_data	*data_lstnew(t_token *line, t_container *con)
 
 	if (line == NULL)
 		return (NULL);
-	toss = (t_data *)malloc(sizeof(t_data));
-	if (toss == NULL)
-		exit(1);
+	toss = (t_data *)ft_calloc(1, sizeof(t_data));
 	init_data_node(toss);
 	toss->cmd_arr = make_cmd(line);
 	if (check_type_and_dup_data(line, toss, con) == 0)
 	{
-		split_free(toss->cmd_arr);
+		free_2d_array(toss->cmd_arr);
 		free(toss);
 		return (0);
 	}
@@ -155,7 +151,7 @@ void	data_lstclear(t_data **lst, void (*del)(void *))
 	{
 		cur = *lst;
 		*lst = (*lst)->next;
-		split_free(cur->cmd_arr);
+		free_2d_array(cur->cmd_arr);
 		free(cur->delimeter);
 		free(cur->infile);
 		free(cur->outfile);
@@ -174,7 +170,7 @@ t_data	*make_data_list(t_token *line, t_container *con)
 	while (line != NULL && line->type != -5)
 		line = line->next;
 	if (line != NULL)
-			line = line->next;
+		line = line->next;
 	while (line != NULL)
 	{
 		if (data_lstadd_back(&head, data_lstnew(line, con)) == 0)

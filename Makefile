@@ -3,11 +3,11 @@ SRCS = main.c ms_parsing.c ms_split.c \
 	ms_tokennew.c ms_tokenadd_back.c termios.c \
 	ms_tokenclear.c ms_expend_edit.c side_utils.c \
 	debug.c data_list.c ms_utils1.c \
-	pipe.c pipe_utils.c pipe_parse.c pipe_exit.c heredoc.c \
+	pipe.c pipe_utils.c pipe_parse.c heredoc.c \
 	builtin_utils.c builtin_cd.c builtin_unset.c \
 	error_execute.c \
 	signal.c heredoc_expend.c \
-	builtin_exit.c builtin_export.c builtin_env.c
+	builtin_exit.c builtin_export.c builtin_env.c builtin_echo.c
 INCS = minishell.h
 LIBFT = -Ilibft -Llibft -lft
 READ = -lreadline

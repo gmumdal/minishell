@@ -24,7 +24,7 @@ char	**add_env(char *var_name, char *var, t_container *con)
 	return (ret);
 }
 
-void	builtin_export(char **cmds, t_container *con)
+int	builtin_export(char **cmds, t_container *con)
 {
 	char	*var_name;
 	char	**ret;
@@ -32,17 +32,18 @@ void	builtin_export(char **cmds, t_container *con)
 	if (cmds[1] == NULL)
 	{
 		builtin_env(con->envp);
-		return ;
+		return (0);
 	}
 	var_name = ft_substr(cmds[1], 0, ft_strchr(cmds[1], '=') - cmds[1]);
 	if (check_identifier(var_name) != 0)
 	{
 		free(var_name);
 		print_execute_error("export", cmds[1], "not a valid identifier");
-		return ;
+		return (1);
 	}
 	ret = add_env(var_name, cmds[1], con);
 	free(var_name);
 	free(con->envp);
 	con->envp = ret;
+	return (0);
 }

@@ -6,23 +6,11 @@
 /*   By: jongmlee <jongmlee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 21:33:16 by hyeongsh          #+#    #+#             */
-/*   Updated: 2023/12/20 22:32:10 by jongmlee         ###   ########.fr       */
+/*   Updated: 2023/12/21 15:05:41 by jongmlee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-void	error_print(int flag)
-{
-	ft_putstr_fd("mish: ", 2);
-	if (flag == 2)
-		ft_putstr_fd("input: ", 2);
-	ft_putstr_fd(strerror(flag), 2);
-	ft_putstr_fd("\n", 2);
-	if (flag == 126)
-		exit(126);
-	exit(1);
-}
 
 int	ft_init(char *s, char *data)
 {
@@ -47,12 +35,28 @@ char	*exit_expend(char *expend)
 	char	*itoa_exit;
 
 	itoa_exit = ft_itoa(exit_code);
-	if (itoa_exit == 0)
-		error_print(errno);
 	toss = ft_strjoin(itoa_exit, expend + 2);
-	if (toss == 0)
-		error_print(errno);
 	free(itoa_exit);
 	free(expend);
 	return (toss);
+}
+
+int	check_token(t_token	*head)
+{
+	while (head)
+	{
+		if (head->type < 0 && head->type > -5 && head->next == NULL)
+			return (print_syntax_error("newline", &head));
+		else if (head->type < 0 && head->type > -5 && head->next != NULL
+			&& head->next->type < 0 && head->next->type > -5)
+			return (print_syntax_error(head->data, &head));
+		else if (head->type == -5 && (head->next == NULL
+				|| (head->next != NULL && head->next->type == -5)))
+			return (print_syntax_error("|", &head));
+		else if (head->type == -5 && (head->prev == NULL
+				|| (head->prev != NULL && head->prev->type < 0)))
+			return (print_syntax_error("|", &head));
+		head = head->next;
+	}
+	return (0);
 }

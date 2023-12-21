@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_itoa.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyeongsh <hyeongsh@student.42seoul.>       +#+  +:+       +#+        */
+/*   By: jongmlee <jongmlee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/07 21:29:58 by hyeongsh          #+#    #+#             */
-/*   Updated: 2023/10/08 13:25:27 by hyeongsh         ###   ########.fr       */
+/*   Updated: 2023/12/21 14:34:54 by jongmlee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,8 +56,6 @@ char	*ft_itoa(int n)
 
 	ln = n;
 	num = (char *)ft_calloc(ft_power(n), sizeof(char));
-	if (num == 0)
-		return (0);
 	ft_itoa_recur(num, ln);
 	return (num);
 }

@@ -6,7 +6,7 @@
 /*   By: jongmlee <jongmlee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 22:25:31 by jongmlee          #+#    #+#             */
-/*   Updated: 2023/12/20 21:02:47 by jongmlee         ###   ########.fr       */
+/*   Updated: 2023/12/21 15:13:44 by jongmlee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,11 +34,9 @@ int	wait_children(t_info *info, t_container *con)
 {
 	int	i;
 	int	wstatus;
-	int	exit_code;
 	int	result;
 
 	i = 0;
-	exit_code = 0;
 	while (1)
 	{
 		result = wait(&wstatus);
@@ -55,20 +53,20 @@ int	wait_children(t_info *info, t_container *con)
 
 int	check_exitcode(int wstatus)
 {
-	int	exit_code;
+	int	exitcode;
 
-	exit_code = 0;
+	exitcode = 0;
 	if (WIFEXITED(wstatus) != 0)
-		exit_code = WEXITSTATUS(wstatus);
+		exitcode = WEXITSTATUS(wstatus);
 	else if (WIFSIGNALED(wstatus) != 0)
 	{
-		exit_code = WTERMSIG(wstatus);
-		if (exit_code == 3)
-			printf("Quit: %d\n", exit_code);
+		exitcode = WTERMSIG(wstatus) + 128;
+		if (exitcode == 131)
+			printf("Quit: %d\n", exitcode - 128);
 		else
 			printf("\n");
 	}
-	return (exit_code);
+	return (exitcode);
 }
 
 void	child(t_info *info, t_container *con)
@@ -85,7 +83,7 @@ void	child(t_info *info, t_container *con)
 	if (info->last_pid == -1)
 	{
 		wait_children(info, con);
-		perror_exit("fork()", 1);
+		error_print(errno);
 	}
 	if (info->last_pid == 0)
 	{
@@ -94,8 +92,7 @@ void	child(t_info *info, t_container *con)
 		open_file(info);
 		close_pipe(info);
 		redirect(info);
-		if (execute_cmd(info, con) == -1)
-			perror_exit("execve()", 1);
+		execute_cmd(info, con);
 	}
 }
 

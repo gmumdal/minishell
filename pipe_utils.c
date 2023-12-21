@@ -6,7 +6,7 @@
 /*   By: jongmlee <jongmlee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 22:28:19 by jongmlee          #+#    #+#             */
-/*   Updated: 2023/12/20 21:08:38 by jongmlee         ###   ########.fr       */
+/*   Updated: 2023/12/21 14:50:14 by jongmlee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	open_pipe(t_info *info)
 	if (info->cnt != 1)
 	{
 		if (pipe(info->pipe_fds[info->cur]) == -1)
-			perror_exit("pipe()", 1);
+			error_print(errno);
 	}
 }
 
@@ -43,7 +43,7 @@ void	open_file(t_info *info)
 	{
 		info->infile_fd = open(info->data->infile, O_RDONLY);
 		if (info->infile_fd == -1)
-			perror_exit(ft_strjoin("minishell: ", info->data->infile), 1);
+			error_print(errno);
 	}
 	if (info->data->outfile != NULL)
 	{
@@ -54,7 +54,7 @@ void	open_file(t_info *info)
 			info->outfile_fd = open(info->data->outfile,
 					O_CREAT | O_WRONLY | O_TRUNC, 0644);
 		if (info->outfile_fd == -1)
-			perror_exit(ft_strjoin("minishell: ", info->data->outfile), 1);
+			error_print(errno);
 	}
 }
 

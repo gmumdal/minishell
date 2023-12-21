@@ -6,7 +6,7 @@
 /*   By: jongmlee <jongmlee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 22:27:54 by jongmlee          #+#    #+#             */
-/*   Updated: 2023/12/20 21:07:30 by jongmlee         ###   ########.fr       */
+/*   Updated: 2023/12/21 15:06:55 by jongmlee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,7 @@ char	*make_cmd_path(char const *path, char const *cmd)
 
 	if (path == NULL && cmd == NULL)
 		return (NULL);
-	ret_tmp = malloc((ft_strlen(path) + ft_strlen(cmd) + 2) * sizeof(char));
-	if (ret_tmp == NULL)
-		perror_exit("malloc()", 1);
+	ret_tmp = ft_calloc((ft_strlen(path) + ft_strlen(cmd) + 2), sizeof(char));
 	ret_str = ret_tmp;
 	while (*path != '\0')
 	{
@@ -64,8 +62,6 @@ char	*get_valid_path(char **cmds, char *env_path)
 	if (env_path == NULL)
 		exit(1);
 	paths = ft_split(env_path, ':');
-	if (paths == NULL)
-		perror_exit("malloc()", 1);
 	free(env_path);
 	i = -1;
 	while (paths[++i] != NULL)
@@ -94,10 +90,7 @@ int	execute_cmd(t_info *info, t_container *con)
 	if (cmds[0] == NULL)
 		exit(0);
 	if (check_builtin(cmds[0]) == 0)
-	{
-		execute_builtin(cmds, con);
-		exit(exit_code);
-	}
+		exit(execute_builtin(cmds, con, 1));
 	env_path = get_env_path(info->envp);
 	if (env_path == NULL)
 		env_path = ft_strdup(BASIC_PATH);
@@ -107,11 +100,6 @@ int	execute_cmd(t_info *info, t_container *con)
 	else
 		valid_path = get_valid_path(cmds, env_path);
 	if (valid_path == NULL)
-	{
-		ft_putstr_fd(ft_strjoin("minishell: ", cmds[0]), 2);
-		ft_putstr_fd(CMD_NOT_FOUND_ERR, 2);
-		exit_code = 127;
-		exit(exit_code);
-	}
+		print_command_error(cmds[0]);
 	return (execve(valid_path, cmds, info->envp));
 }

@@ -6,7 +6,7 @@
 /*   By: jongmlee <jongmlee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/08 17:28:00 by hyeongsh          #+#    #+#             */
-/*   Updated: 2023/12/20 17:25:48 by jongmlee         ###   ########.fr       */
+/*   Updated: 2023/12/21 14:30:17 by jongmlee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,13 +18,9 @@ t_token	*ms_tokennew(char *data, char **envp)
 {
 	t_token	*toss;
 
-	if (data == 0)
-		error_print(errno);
 	if (ft_init(data, "$") > -1)
 		data = expend_list(data, envp);
-	toss = (t_token *)malloc(sizeof(t_token) * 1);
-	if (toss == 0)
-		error_print(errno);
+	toss = (t_token *)ft_calloc(1, sizeof(t_token));
 	toss->next = NULL;
 	toss->prev = NULL;
 	toss->data = data;
@@ -47,6 +43,5 @@ static int	ms_typecheck(char *data)
 		return (-4);
 	else if (ft_strncmp("|", data, 2) == 0)
 		return (-5);
-	printf("syntax error: %s\n", data);
 	return (100);
 }

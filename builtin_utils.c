@@ -3,27 +3,30 @@
 int	check_builtin(char *s)
 {
 	if (ft_strncmp(s, "cd", 3) == 0 || ft_strncmp(s, "echo", 5) == 0
-	|| ft_strncmp(s, "pwd", 4) == 0 || ft_strncmp(s, "env", 4) == 0
-	|| ft_strncmp(s, "unset", 6) == 0 || ft_strncmp(s, "exit", 5) == 0
-	|| ft_strncmp(s, "export", 7) == 0)
+		|| ft_strncmp(s, "pwd", 4) == 0 || ft_strncmp(s, "env", 4) == 0
+		|| ft_strncmp(s, "unset", 6) == 0 || ft_strncmp(s, "exit", 5) == 0
+		|| ft_strncmp(s, "export", 7) == 0)
 		return (0);
 	return (1);
 }
 
-void	execute_builtin(char **cmds, t_container *con)
+int	execute_builtin(char **cmds, t_container *con, int flag)
 {
 	if (ft_strncmp(cmds[0], "cd", 3) == 0)
-		builtin_cd(cmds, con);
+		return (builtin_cd(cmds, con));
 	else if (ft_strncmp(cmds[0], "pwd", 4) == 0)
 		printf("%s\n", con->pwd);
 	else if (ft_strncmp(cmds[0], "unset", 6) == 0)
-		builtin_unset(cmds, con);
+		return (builtin_unset(cmds, con));
 	else if (ft_strncmp(cmds[0], "exit", 5) == 0)
-		builtin_exit(cmds);
-	else if (ft_strncmp(cmds[0], "export", 7) == 0)
-		builtin_export(cmds, con);
+		return (builtin_exit(cmds, flag));
+	else if (ft_strncmp(cmds[0], "export", 7) == 0) //
+		return (builtin_export(cmds, con));
 	else if (ft_strncmp(cmds[0], "env", 4) == 0)
-		builtin_env(con->envp);
+		return (builtin_env(con->envp));
+	else if (ft_strncmp(cmds[0], "echo", 5) == 0)
+		return (builtin_echo(cmds));
+	return (0);
 }
 
 int	get_2d_arr_len(char	**s)

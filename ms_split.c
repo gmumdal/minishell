@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyeongsh <hyeongsh@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jongmlee <jongmlee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/03 16:02:17 by hyeongsh          #+#    #+#             */
-/*   Updated: 2023/12/16 17:02:34 by hyeongsh         ###   ########.fr       */
+/*   Updated: 2023/12/21 14:25:25 by jongmlee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,15 +21,11 @@ char	**ms_split(char *cmd)
 
 	wordlen = ft_strlen(cmd);
 	toss = (char **)ft_calloc(wordlen + 1, sizeof(char *));
-	if (toss == 0)
-		error_print(errno);
 	count = 0;
 	while (count < wordlen && *cmd != 0)
 	{
 		index = 0;
 		toss[count] = (char *)ft_calloc(wordlen + 1, sizeof(char));
-		if (toss[count] == 0)
-			error_print(errno);
 		if (ms_split_input(toss[count], &cmd, "|<>&;\\") == -1)
 			return (NULL);
 		count++;

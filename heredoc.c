@@ -15,11 +15,12 @@ int	heredoc(t_data *info, t_container *con, int type)
 		ms_sigset(sig_heredoc, SIG_IGN);
 		tmpfile_fd = open(info->infile, O_CREAT | O_WRONLY | O_TRUNC, 0644);
 		if (tmpfile_fd < 0)
-			perror_exit("open()", 1);
+			error_print(errno);
 		read_heredoc(info, con, tmpfile_fd, type);
-		exit (0);
+ 		exit(0);
 	}
 	wait(&status);
+	exit_code = WEXITSTATUS(status);
 	return (wait_heredoc(info, status));
 }
 

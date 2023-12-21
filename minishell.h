@@ -6,7 +6,7 @@
 /*   By: jongmlee <jongmlee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 16:53:34 by hyeongsh          #+#    #+#             */
-/*   Updated: 2023/12/20 20:18:57 by jongmlee         ###   ########.fr       */
+/*   Updated: 2023/12/21 15:07:11 by jongmlee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ typedef struct s_token
 
 /* parsing.c */
 t_token	*parsing(char *line, char **envp);
-void	split_free(char **command);
+void	free_2d_array(char **arr);
 
 /* termios.c */
 void	save_input_mode(struct termios *old_term);
@@ -112,6 +112,7 @@ int		ms_tokenadd_back(t_token **token, t_token *new);
 void	error_print(int flag);
 int		ft_init(char *s, char *data);
 char	*exit_expend(char *expend);
+int		check_token(t_token	*head);
 
 /* ms_expend_edit.c */
 char	*expend_list(char *data, char **envp);
@@ -140,10 +141,6 @@ char	*get_path(char **envp);
 char	*make_cmd_path(char const *path, char const *cmd);
 char	*get_valid_path(char **cmds, char *env_path);
 int		execute_cmd(t_info *info, t_container *con);
-
-/* pipe_exit */
-void	free_2d_array(char **arr);
-void	perror_exit(char *str, int exit_code);
 
 /* pipe_utils */
 void	open_pipe(t_info *info);
@@ -181,10 +178,12 @@ int		get_data_list_len(t_data *lst);
 
 /* error_execute */
 int		print_execute_error(char *cmd, char *path, char *error_msg);
+int		print_syntax_error(char *error_char, t_token **head);
+void	print_command_error(char *cmd);
 
 /* builtin_utils */
 int		check_builtin(char *s);
-void	execute_builtin(char **cmds, t_container *con);
+int		execute_builtin(char **cmds, t_container *con, int flag);
 int		get_2d_arr_len(char	**s);
 
 /* builtin_cd */
@@ -192,20 +191,21 @@ char	*get_env_value(char *env, char **envp);
 int		builtin_cd(char **cmds, t_container *con);
 
 /* builtin_unset */
-void	builtin_unset(char	**cmds, t_container *con);
+int		builtin_unset(char	**cmds, t_container *con);
 int		check_identifier(char *cmd);
 
-/* bulitin_exit */
-void	builtin_exit(char **cmds);
+/* bulitin */
+int		builtin_exit(char **cmds, int flag);
+int		builtin_echo(char **cmds);
 
 /* bulitin_export */
-void	builtin_export(char **cmds, t_container *con);
+int		builtin_export(char **cmds, t_container *con);
 
 /* builtin_env */
-void	builtin_env(char **s);
+int		builtin_env(char **s);
 
 /* main */
-void	ms_readline(t_container *con);
+void	ms_readline(t_container *con, char *line);
 void	pre_init_container(t_container *con, char **envp);
 int		init_container(t_container *con, t_token *line);
 

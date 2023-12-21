@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc_expend.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyeongsh <hyeongsh@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jongmlee <jongmlee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 14:49:41 by hyeongsh          #+#    #+#             */
-/*   Updated: 2023/12/19 15:16:27 by hyeongsh         ###   ########.fr       */
+/*   Updated: 2023/12/21 14:41:56 by jongmlee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,13 +26,9 @@ char	*heredoc_expend(char *data, char **envp)
 	i = 0;
 	j = 0;
 	expend = (char **)ft_calloc(ft_strlen(data) + 1, sizeof(char *));
-	if (expend == 0)
-		error_print(errno);
 	while (data[i])
 	{
 		expend[j] = (char *)ft_calloc(ft_strlen(data) + 1, sizeof(char));
-		if (expend[j] == 0)
-			error_print(errno);
 		if (here_make_expend(expend[j], data, &i, 0) == 1)
 			expend[j] = here_env_expend(expend[j], envp);
 		j++;
@@ -79,8 +75,6 @@ static char	*here_env_expend(char *expend, char **envp)
 	int		len;
 
 	tmp = ft_strjoin(&expend[1], "=");
-	if (tmp == 0)
-		error_print(errno);
 	len = ft_strlen(tmp);
 	free(expend);
 	while (*envp && ft_strncmp(*envp, tmp, len) != 0)
@@ -89,8 +83,6 @@ static char	*here_env_expend(char *expend, char **envp)
 	if (*envp == 0)
 		return (NULL);
 	expend = ft_strdup(*envp + len);
-	if (expend == 0)
-		error_print(errno);
 	return (expend);
 }
 
@@ -114,11 +106,9 @@ static char	*here_join_expend(char **expend, int j)
 		else
 			tmp = ft_strdup(toss);
 		free(toss);
-		if (tmp == 0)
-			error_print(errno);
 		toss = tmp;
 		i++;
 	}
-	split_free(expend);
+	free_2d_array(expend);
 	return (toss);
 }

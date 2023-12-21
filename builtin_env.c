@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-void	builtin_env(char **s)
+int	builtin_env(char **s)
 {
 	int	i;
 
@@ -10,4 +10,5 @@ void	builtin_env(char **s)
 		printf("%s\n", s[i]);
 		i++;
 	}
+	return (0);
 }
