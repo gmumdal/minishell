@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_unset.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyeongsh <hyeongsh@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jongmlee <jongmlee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/21 22:27:38 by hyeongsh          #+#    #+#             */
-/*   Updated: 2023/12/21 22:27:39 by hyeongsh         ###   ########.fr       */
+/*   Updated: 2023/12/22 08:03:23 by jongmlee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int	check_identifier(char *cmd)
 
 int	builtin_unset(char **cmds, t_container *con)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	if (cmds[1] == NULL)
