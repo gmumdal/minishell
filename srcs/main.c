@@ -6,7 +6,7 @@
 /*   By: jongmlee <jongmlee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 16:50:33 by hyeongsh          #+#    #+#             */
-/*   Updated: 2023/12/21 21:47:50 by jongmlee         ###   ########.fr       */
+/*   Updated: 2023/12/22 10:18:15 by jongmlee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	main(int ac, char **av, char **envp)
 	if (ac != 1)
 		return (0);
 	(void) av;
-	exit_code = 0;
+	g_exit_code = 0;
 	ms_sigset(sig_newline, SIG_IGN);
 	save_input_mode(&con.old_term);
 	set_input_mode(&con.new_term);
@@ -29,7 +29,7 @@ int	main(int ac, char **av, char **envp)
 	free_2d_array(con.envp);
 	printf("\033[u\033[1B\033[1Aexit\n");
 	reset_input_mode(&con.old_term);
-	return (exit_code);
+	return (g_exit_code);
 }
 
 void	pre_init_container(t_container *con, char **envp)
@@ -61,7 +61,7 @@ void	ms_readline(t_container *con, char *line)
 			continue ;
 		if (con->cnt == 1 && con->head->cmd_arr[0] != NULL
 			&& check_builtin(con->head->cmd_arr[0]) == 0)
-			exit_code = execute_builtin_one_case(con);
+			g_exit_code = execute_builtin_one_case(con);
 		else
 			pipex(con);
 		line_clear(&head, con);

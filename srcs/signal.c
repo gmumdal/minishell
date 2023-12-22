@@ -6,7 +6,7 @@
 /*   By: jongmlee <jongmlee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 13:36:41 by hyeongsh          #+#    #+#             */
-/*   Updated: 2023/12/21 17:09:25 by jongmlee         ###   ########.fr       */
+/*   Updated: 2023/12/22 10:18:30 by jongmlee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	ms_sigset(void (*sigint_func)(int), void (*sigquit_func)(int))
 void	sig_newline(int signum)
 {
 	(void)signum;
-	exit_code = 1;
+	g_exit_code = 1;
 	write(1, "\n", 1);
 	rl_on_new_line();
 	rl_replace_line("", 1);

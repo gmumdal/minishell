@@ -6,7 +6,7 @@
 /*   By: jongmlee <jongmlee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/21 22:27:45 by hyeongsh          #+#    #+#             */
-/*   Updated: 2023/12/22 09:48:11 by jongmlee         ###   ########.fr       */
+/*   Updated: 2023/12/22 10:17:30 by jongmlee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,12 +79,12 @@ int	execute_builtin_one_case(t_container *con)
 	stdin_fd = dup(STDIN_FILENO);
 	stdout_fd = dup(STDOUT_FILENO);
 	redirect_and_open_file(con, &in_fd, &out_fd);
-	exit_code = execute_builtin(con->head->cmd_arr, con, 0);
+	g_exit_code = execute_builtin(con->head->cmd_arr, con, 0);
 	dup2(stdin_fd, STDIN_FILENO);
 	dup2(stdout_fd, STDOUT_FILENO);
 	close(in_fd);
 	close(out_fd);
 	close(stdin_fd);
 	close(stdout_fd);
-	return (exit_code);
+	return (g_exit_code);
 }

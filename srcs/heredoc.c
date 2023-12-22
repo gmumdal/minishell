@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyeongsh <hyeongsh@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jongmlee <jongmlee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/21 22:28:25 by hyeongsh          #+#    #+#             */
-/*   Updated: 2023/12/21 22:29:22 by hyeongsh         ###   ########.fr       */
+/*   Updated: 2023/12/22 10:18:03 by jongmlee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int	heredoc(t_data *info, t_container *con, int type)
 		exit(0);
 	}
 	wait(&status);
-	exit_code = WEXITSTATUS(status);
+	g_exit_code = WEXITSTATUS(status);
 	return (wait_heredoc(info, status));
 }
 
@@ -67,7 +67,7 @@ int	wait_heredoc(t_data *info, int status)
 		unlink(info->infile);
 		write(1, "\n", 1);
 		ms_sigset(sig_newline, SIG_IGN);
-		exit_code = 1;
+		g_exit_code = 1;
 		return (0);
 	}
 	ms_sigset(sig_newline, SIG_IGN);

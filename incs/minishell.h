@@ -6,7 +6,7 @@
 /*   By: jongmlee <jongmlee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 16:53:34 by hyeongsh          #+#    #+#             */
-/*   Updated: 2023/12/22 10:04:41 by jongmlee         ###   ########.fr       */
+/*   Updated: 2023/12/22 10:16:53 by jongmlee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@
 # define CMD_NOT_FOUND_ERR ": command not found\n"
 # define ERROR 1
 
-int	exit_code;
+int	g_exit_code;
 
 typedef struct s_container
 {

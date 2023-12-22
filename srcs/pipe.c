@@ -6,7 +6,7 @@
 /*   By: jongmlee <jongmlee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 22:25:31 by jongmlee          #+#    #+#             */
-/*   Updated: 2023/12/21 20:31:30 by jongmlee         ###   ########.fr       */
+/*   Updated: 2023/12/22 10:18:19 by jongmlee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ int	wait_children(t_info *info, t_container *con)
 		if (result == -1)
 			break ;
 		if (result == info->last_pid)
-			exit_code = check_exitcode(wstatus);
+			g_exit_code = check_exitcode(wstatus);
 	}
 	ms_sigset(sig_newline, SIG_IGN);
 	set_input_mode(&con->new_term);

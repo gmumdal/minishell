@@ -6,7 +6,7 @@
 /*   By: jongmlee <jongmlee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/22 10:02:58 by jongmlee          #+#    #+#             */
-/*   Updated: 2023/12/22 10:03:04 by jongmlee         ###   ########.fr       */
+/*   Updated: 2023/12/22 10:17:54 by jongmlee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int	print_syntax_error(char *error_char, t_token **head)
 	ft_putstr_fd("minishell: syntax error near unexpected token `", 2);
 	ft_putstr_fd(error_char, 2);
 	ft_putstr_fd("\'\n", 2);
-	exit_code = 258;
+	g_exit_code = 258;
 	ms_tokenclear(head, free);
 	return (1);
 }

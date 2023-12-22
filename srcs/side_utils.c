@@ -6,7 +6,7 @@
 /*   By: jongmlee <jongmlee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 21:33:16 by hyeongsh          #+#    #+#             */
-/*   Updated: 2023/12/21 15:57:09 by jongmlee         ###   ########.fr       */
+/*   Updated: 2023/12/22 10:18:24 by jongmlee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ char	*exit_expend(char *expend)
 	char	*toss;
 	char	*itoa_exit;
 
-	itoa_exit = ft_itoa(exit_code);
+	itoa_exit = ft_itoa(g_exit_code);
 	toss = ft_strjoin(itoa_exit, expend + 2);
 	free(itoa_exit);
 	free(expend);
