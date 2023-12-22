@@ -6,7 +6,7 @@
 /*   By: jongmlee <jongmlee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/21 22:27:45 by hyeongsh          #+#    #+#             */
-/*   Updated: 2023/12/22 10:17:30 by jongmlee         ###   ########.fr       */
+/*   Updated: 2023/12/22 13:09:00 by jongmlee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ void	redirect_and_open_file(t_container *con, int *in_fd, int *out_fd)
 	{
 		*in_fd = open(con->head->infile, O_RDONLY);
 		if (*in_fd == -1)
-			print_file_error(con->head->infile);
+			print_file_error(con->head->infile, con);
 		dup2(*in_fd, STDIN_FILENO);
 	}
 	if (con->head->outfile != NULL)
@@ -79,12 +79,12 @@ int	execute_builtin_one_case(t_container *con)
 	stdin_fd = dup(STDIN_FILENO);
 	stdout_fd = dup(STDOUT_FILENO);
 	redirect_and_open_file(con, &in_fd, &out_fd);
-	g_exit_code = execute_builtin(con->head->cmd_arr, con, 0);
+	con->exit_code = execute_builtin(con->head->cmd_arr, con, 0);
 	dup2(stdin_fd, STDIN_FILENO);
 	dup2(stdout_fd, STDOUT_FILENO);
 	close(in_fd);
 	close(out_fd);
 	close(stdin_fd);
 	close(stdout_fd);
-	return (g_exit_code);
+	return (con->exit_code);
 }

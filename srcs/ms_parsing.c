@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   ms_parsing.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyeongsh <hyeongsh@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jongmlee <jongmlee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/08 12:20:48 by hyeongsh          #+#    #+#             */
-/*   Updated: 2023/12/21 22:30:43 by hyeongsh         ###   ########.fr       */
+/*   Updated: 2023/12/22 12:55:46 by jongmlee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_token	*parsing(char *line, char **envp)
+t_token	*parsing(char *line, t_container *con)
 {
 	t_token	*head;
 	t_token	*tmp;
@@ -26,13 +26,14 @@ t_token	*parsing(char *line, char **envp)
 	i = 0;
 	while (command[i])
 	{
-		tmp = ms_tokennew(ft_strdup(command[i++]), envp);
+		tmp = ms_tokennew(ft_strdup(command[i++]), con);
 		if (tmp == NULL)
 			continue ;
 		ms_tokenadd_back(&head, tmp);
 		if (tmp->type == 100)
 		{
-			print_syntax_error(&tmp->data[ft_strlen(tmp->data) - 1], &head);
+			print_syntax_error(&tmp->data[ft_strlen(tmp->data) - 1],
+				&head, con);
 			break ;
 		}
 	}

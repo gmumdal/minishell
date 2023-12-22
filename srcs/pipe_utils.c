@@ -6,7 +6,7 @@
 /*   By: jongmlee <jongmlee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 22:28:19 by jongmlee          #+#    #+#             */
-/*   Updated: 2023/12/21 20:04:37 by jongmlee         ###   ########.fr       */
+/*   Updated: 2023/12/22 13:22:20 by jongmlee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,13 +37,13 @@ void	close_pipe(t_info *info)
 	}
 }
 
-void	open_file(t_info *info)
+void	open_file(t_info *info, t_container *con)
 {
 	if (info->data->infile != NULL)
 	{
 		info->infile_fd = open(info->data->infile, O_RDONLY);
 		if (info->infile_fd == -1)
-			print_file_error(info->data->infile);
+			print_file_error(info->data->infile, con);
 	}
 	if (info->data->outfile != NULL)
 	{
@@ -54,7 +54,7 @@ void	open_file(t_info *info)
 			info->outfile_fd = open(info->data->outfile,
 					O_CREAT | O_WRONLY | O_TRUNC, 0644);
 		if (info->outfile_fd == -1)
-			error_print(errno);
+			print_file_error(info->data->outfile, con);
 	}
 }
 

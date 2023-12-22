@@ -6,7 +6,7 @@
 /*   By: jongmlee <jongmlee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/21 22:28:25 by hyeongsh          #+#    #+#             */
-/*   Updated: 2023/12/22 10:18:03 by jongmlee         ###   ########.fr       */
+/*   Updated: 2023/12/22 13:09:10 by jongmlee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,8 @@ int	heredoc(t_data *info, t_container *con, int type)
 		exit(0);
 	}
 	wait(&status);
-	g_exit_code = WEXITSTATUS(status);
-	return (wait_heredoc(info, status));
+	con->exit_code = WEXITSTATUS(status);
+	return (wait_heredoc(info, status, con));
 }
 
 void	read_heredoc(t_data *info, t_container *con, int tmpfile_fd, int type)
@@ -60,14 +60,14 @@ void	read_heredoc(t_data *info, t_container *con, int tmpfile_fd, int type)
 	close(tmpfile_fd);
 }
 
-int	wait_heredoc(t_data *info, int status)
+int	wait_heredoc(t_data *info, int status, t_container *con)
 {
 	if (WIFSIGNALED(status) != 0)
 	{
 		unlink(info->infile);
 		write(1, "\n", 1);
 		ms_sigset(sig_newline, SIG_IGN);
-		g_exit_code = 1;
+		con->exit_code = 1;
 		return (0);
 	}
 	ms_sigset(sig_newline, SIG_IGN);

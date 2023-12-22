@@ -6,7 +6,7 @@
 /*   By: jongmlee <jongmlee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/16 16:18:05 by hyeongsh          #+#    #+#             */
-/*   Updated: 2023/12/21 20:58:52 by jongmlee         ###   ########.fr       */
+/*   Updated: 2023/12/22 12:57:03 by jongmlee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,10 @@
 
 static int	make_expend(char *expend, char *data, int *i, int type);
 static int	quote_edit(char c, int *quote, int type);
-static char	*env_expend(char *expend, char **envp);
+static char	*env_expend(char *expend, t_container *con);
 static char	*join_expend(char **expend, int j);
 
-char	*expend_list(char *data, char **envp)
+char	*expend_list(char *data, t_container *con)
 {
 	char	**expend;
 	int		i;
@@ -30,7 +30,7 @@ char	*expend_list(char *data, char **envp)
 	{
 		expend[j] = (char *)ft_calloc(ft_strlen(data) + 1, sizeof(char));
 		if (make_expend(expend[j], data, &i, 0) == 1)
-			expend[j] = env_expend(expend[j], envp);
+			expend[j] = env_expend(expend[j], con);
 		j++;
 	}
 	free(data);
@@ -69,24 +69,26 @@ static int	quote_edit(char data, int *quote, int type)
 	return (type);
 }
 
-static char	*env_expend(char *expend, char **envp)
+static char	*env_expend(char *expend, t_container *con)
 {
 	char	*tmp;
 	int		len;
+	int		index;
 
 	if (ft_strncmp(expend, "$", 2) == 0 || ft_strncmp(expend, "\"$\"", 4) == 0)
 		return (expend);
 	if (ft_strncmp(expend, "$?", 2) == 0)
-		return (exit_expend(expend));
+		return (exit_expend(expend, con));
 	tmp = ft_strjoin(&expend[1], "=");
 	len = ft_strlen(tmp);
 	free(expend);
-	while (*envp && ft_strncmp(*envp, tmp, len) != 0)
-		envp++;
+	index = 0;
+	while (con->envp[index] && ft_strncmp(con->envp[index], tmp, len) != 0)
+		index++;
 	free(tmp);
-	if (*envp == 0)
+	if (con->envp[index] == 0)
 		return (NULL);
-	expend = ft_strdup(*envp + len);
+	expend = ft_strdup(con->envp[index] + len);
 	return (expend);
 }
 

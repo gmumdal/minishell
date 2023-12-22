@@ -6,7 +6,7 @@
 /*   By: jongmlee <jongmlee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 16:53:34 by hyeongsh          #+#    #+#             */
-/*   Updated: 2023/12/22 10:16:53 by jongmlee         ###   ########.fr       */
+/*   Updated: 2023/12/22 13:21:50 by jongmlee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@
 # define CMD_NOT_FOUND_ERR ": command not found\n"
 # define ERROR 1
 
-int	g_exit_code;
+int	g_signal;
 
 typedef struct s_container
 {
@@ -47,6 +47,7 @@ typedef struct s_container
 	char			**envp;
 	char			*pwd;
 	int				cnt;
+	int				exit_code;
 	struct termios	old_term;
 	struct termios	new_term;
 }	t_container;
@@ -83,7 +84,7 @@ typedef struct s_token
 }	t_token;
 
 /* parsing.c */
-t_token	*parsing(char *line, char **envp);
+t_token	*parsing(char *line, t_container *con);
 void	free_2d_array(char **arr);
 
 /* termios.c */
@@ -103,17 +104,17 @@ int		ms_split_plus(char *toss, int *i, char **cmd);
 char	**ms_split(char *cmd);
 
 /* ms_token.c */
-t_token	*ms_tokennew(char *data, char **envp);
+t_token	*ms_tokennew(char *data, t_container *con);
 void	ms_tokenclear(t_token **token, void (*del)(void *));
 int		ms_tokenadd_back(t_token **token, t_token *new);
 
 /* side_utils.c */
 int		ft_init(char *s, char *data);
-char	*exit_expend(char *expend);
-int		check_token(t_token	*head);
+char	*exit_expend(char *expend, t_container *con);
+int		check_token(t_token	*head, t_container *con);
 
 /* ms_expend_edit.c */
-char	*expend_list(char *data, char **envp);
+char	*expend_list(char *data, t_container *con);
 
 /* debug */
 void	print_arr(char *s);
@@ -144,7 +145,7 @@ int		execute_cmd(t_info *info, t_container *con);
 /* pipe_utils */
 void	open_pipe(t_info *info);
 void	close_pipe(t_info *info);
-void	open_file(t_info *info);
+void	open_file(t_info *info, t_container *con);
 void	close_all_pipe(t_info *info);
 void	redirect(t_info *info);
 void	check_valid_file(t_token *line, t_data *toss, int *flag);
@@ -161,7 +162,7 @@ int		heredoc(t_data *info, t_container *con, int type);
 char	*get_heredoc_tmpfile_name(void);
 void	delete_all_heredoc_tmpfile(t_data *head);
 void	read_heredoc(t_data *info, t_container *con, int tmpfile_fd, int type);
-int		wait_heredoc(t_data *info, int status);
+int		wait_heredoc(t_data *info, int status, t_container *con);
 
 /* heredoc_expend.c */
 char	*heredoc_expend(char *data, char **envp);
@@ -186,13 +187,13 @@ int		get_data_list_len(t_data *lst);
 
 /* error_exit */
 void	error_print(int flag);
-void	print_command_error(char *cmd);
-void	print_file_error(char *file);
-void	print_execve_error(char *cmd);
+void	print_command_error(char *cmd, t_container *con);
+void	print_file_error(char *file, t_container *con);
+void	print_execve_error(char *cmd, t_container *con);
 
 /* error_return */
 int		print_execute_error(char *cmd, char *path, char *error_msg);
-int		print_syntax_error(char *error_char, t_token **head);
+int		print_syntax_error(char *error_char, t_token **head, t_container *con);
 
 /* builtin_execute */
 int		check_builtin(char *s);
@@ -227,5 +228,6 @@ void	line_clear(t_token **token, t_container *con);
 
 /* common_utils */
 int		get_2d_arr_len(char	**s);
+int		check_empty(char *s);
 
 #endif
