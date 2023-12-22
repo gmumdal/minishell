@@ -6,7 +6,7 @@
 /*   By: jongmlee <jongmlee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 16:53:34 by hyeongsh          #+#    #+#             */
-/*   Updated: 2023/12/21 21:22:01 by jongmlee         ###   ########.fr       */
+/*   Updated: 2023/12/22 10:04:41 by jongmlee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,6 @@ void	ms_tokenclear(t_token **token, void (*del)(void *));
 int		ms_tokenadd_back(t_token **token, t_token *new);
 
 /* side_utils.c */
-void	error_print(int flag);
 int		ft_init(char *s, char *data);
 char	*exit_expend(char *expend);
 int		check_token(t_token	*head);
@@ -168,26 +167,37 @@ int		wait_heredoc(t_data *info, int status);
 char	*heredoc_expend(char *data, char **envp);
 
 /* data_list */
-void	init_data_node(t_data *node);
-int		get_cmd_arr_len(t_token *lst);
 t_data	*data_lstnew(t_token *line, t_container *con);
 t_data	*data_lstlast(t_data *lst);
 int		data_lstadd_back(t_data **lst, t_data *new);
 void	data_lstclear(t_data **lst, void (*del)(void *));
+
+/* data_init */
 t_data	*make_data_list(t_token *line, t_container *con);
+int		init_container(t_container *con, t_token *line);
+char	**make_cmd(t_token *list);
+void	check_valid_file(t_token *line, t_data *toss, int *flag);
+int		check_type_and_dup_data(t_token *line, t_data *toss, t_container *con);
+
+/* data_utils */
+void	init_data_node(t_data *node);
+int		get_cmd_arr_len(t_token *lst);
 int		get_data_list_len(t_data *lst);
 
-/* error_execute */
-int		print_execute_error(char *cmd, char *path, char *error_msg);
-int		print_syntax_error(char *error_char, t_token **head);
+/* error_exit */
+void	error_print(int flag);
 void	print_command_error(char *cmd);
 void	print_file_error(char *file);
 void	print_execve_error(char *cmd);
 
-/* builtin_utils */
+/* error_return */
+int		print_execute_error(char *cmd, char *path, char *error_msg);
+int		print_syntax_error(char *error_char, t_token **head);
+
+/* builtin_execute */
 int		check_builtin(char *s);
 int		execute_builtin(char **cmds, t_container *con, int flag);
-int		get_2d_arr_len(char	**s);
+void	redirect_and_open_file(t_container *con, int *in_fd, int *out_fd);
 int		execute_builtin_one_case(t_container *con);
 
 /* builtin_cd */
@@ -199,7 +209,7 @@ int		builtin_unset(char	**cmds, t_container *con);
 int		check_identifier(char *cmd);
 char	**sub_env(t_container *con, char *cmd);
 
-/* bulitin */
+/* bulitin_exit */
 int		builtin_exit(char **cmds, int flag);
 int		builtin_echo(char **cmds);
 
@@ -214,5 +224,8 @@ void	ms_readline(t_container *con, char *line);
 void	pre_init_container(t_container *con, char **envp);
 int		init_container(t_container *con, t_token *line);
 void	line_clear(t_token **token, t_container *con);
+
+/* common_utils */
+int		get_2d_arr_len(char	**s);
 
 #endif

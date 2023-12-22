@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   builtin_utils.c                                    :+:      :+:    :+:   */
+/*   builtin_execute.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyeongsh <hyeongsh@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jongmlee <jongmlee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/21 22:27:45 by hyeongsh          #+#    #+#             */
-/*   Updated: 2023/12/21 22:32:37 by hyeongsh         ###   ########.fr       */
+/*   Updated: 2023/12/22 09:48:11 by jongmlee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,52 +44,47 @@ int	execute_builtin(char **cmds, t_container *con, int flag)
 	return (0);
 }
 
-int	execute_builtin_one_case(t_container *con)
+void	redirect_and_open_file(t_container *con, int *in_fd, int *out_fd)
 {
-	int	in_fd;
-	int	out_fd;
-	int	stdin;
-	int	stdout;
-
-	in_fd = 2147483647;
-	out_fd = 2147483646;
-	stdin = dup(STDIN_FILENO);
-	stdout = dup(STDOUT_FILENO);
 	if (con->head->infile != NULL)
 	{
-		in_fd = open(con->head->infile, O_RDONLY);
-		if (in_fd == -1)
+		*in_fd = open(con->head->infile, O_RDONLY);
+		if (*in_fd == -1)
 			print_file_error(con->head->infile);
-		dup2(in_fd, STDIN_FILENO);
+		dup2(*in_fd, STDIN_FILENO);
 	}
 	if (con->head->outfile != NULL)
 	{
 		if (con->head->is_append == 1)
-			out_fd = open(con->head->outfile,
+			*out_fd = open(con->head->outfile,
 					O_CREAT | O_WRONLY | O_APPEND, 0644);
 		else
-			out_fd = open(con->head->outfile,
+			*out_fd = open(con->head->outfile,
 					O_CREAT | O_WRONLY | O_TRUNC, 0644);
-		if (out_fd == -1)
+		if (*out_fd == -1)
 			error_print(errno);
-		dup2(out_fd, STDOUT_FILENO);
+		dup2(*out_fd, STDOUT_FILENO);
 	}
-	exit_code = execute_builtin(con->head->cmd_arr, con, 0);
-	dup2(stdin, STDIN_FILENO);
-	dup2(stdout, STDOUT_FILENO);
-	close(in_fd);
-	close(out_fd);
-	close(stdin);
-	close(stdout);
-	return (exit_code);
 }
 
-int	get_2d_arr_len(char	**s)
+int	execute_builtin_one_case(t_container *con)
 {
-	int	i;
+	int	in_fd;
+	int	out_fd;
+	int	stdin_fd;
+	int	stdout_fd;
 
-	i = 0;
-	while (s[i] != NULL)
-		i++;
-	return (i);
+	in_fd = 2147483647;
+	out_fd = 2147483646;
+	stdin_fd = dup(STDIN_FILENO);
+	stdout_fd = dup(STDOUT_FILENO);
+	redirect_and_open_file(con, &in_fd, &out_fd);
+	exit_code = execute_builtin(con->head->cmd_arr, con, 0);
+	dup2(stdin_fd, STDIN_FILENO);
+	dup2(stdout_fd, STDOUT_FILENO);
+	close(in_fd);
+	close(out_fd);
+	close(stdin_fd);
+	close(stdout_fd);
+	return (exit_code);
 }

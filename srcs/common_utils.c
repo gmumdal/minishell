@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ms_utils1.c                                        :+:      :+:    :+:   */
+/*   ms_utils.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyeongsh <hyeongsh@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jongmlee <jongmlee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/21 22:29:33 by hyeongsh          #+#    #+#             */
-/*   Updated: 2023/12/21 22:29:38 by hyeongsh         ###   ########.fr       */
+/*   Updated: 2023/12/22 09:36:59 by jongmlee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,4 +30,14 @@ char	**ms_2d_arr_dup(char **s)
 	}
 	result[i] = NULL;
 	return (result);
+}
+
+int	get_2d_arr_len(char	**s)
+{
+	int	i;
+
+	i = 0;
+	while (s[i] != NULL)
+		i++;
+	return (i);
 }
